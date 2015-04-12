@@ -1,0 +1,69 @@
+import argparse
+
+
+def log(args):
+    pass
+
+
+def edit(args):
+    pass
+
+
+def stats(args):
+    pass
+
+
+def set_log_parser(subparser):
+    log_parser = subparser.add_parser("log", help="Create timelog message")
+    # call log() function, when processing log command
+    log_parser.set_defaults(func=log)
+
+
+def set_edit_parser(subparser):
+    log_parser = subparser.add_parser("edit", help="Edit timelog file")
+    log_parser.add_argument("-e", "--editor", help="Explicitly set editor")
+    # call edit() function, when processing edit command
+    log_parser.set_defaults(func=edit)
+
+
+def set_stats_parser(subparser):
+    log_parser = subparser.add_parser(
+        "stats",
+        help="Show how much time was spent working or slacking"
+    )
+
+    log_parser.add_argument("--today",
+                            help="Show today's work times (default)")
+    log_parser.add_argument("-y", "--yesterday",
+                            help="Show yesterday's work times")
+    log_parser.add_argument("-d", "--day",
+                            help="Show specific day's work times")
+
+    log_parser.add_argument("--week",
+                            help="Show specific week's work times")
+    log_parser.add_argument("--last-week",
+                            help="Show last week's work times")
+
+    log_parser.add_argument("--month",
+                            help="Show specific month's work times")
+    log_parser.add_argument("--last-month",
+                            help="Show last month's work times")
+
+    log_parser.add_argument("-f", "--from",
+                            help="Show work times from specific date")
+    log_parser.add_argument("-t", "--to",
+                            help="Show work times from to specific date")
+
+    # call stats() function, when processing stats command
+    log_parser.set_defaults(func=stats)
+
+
+def parse_args(args):
+    parser = argparse.ArgumentParser()
+
+    subparser = parser.add_subparsers(help="sub-command help")
+    set_log_parser(subparser)
+    set_edit_parser(subparser)
+    set_stats_parser(subparser)
+
+    return parser.parse_args(args)
