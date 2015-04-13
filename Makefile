@@ -6,6 +6,10 @@ all: env
 env:
 	pyvenv env
 
+.PHONY: test
+test:
+	env/bin/python tests.py
+
 .PHONY: install
 install:
 	env/bin/pip install --editable .
