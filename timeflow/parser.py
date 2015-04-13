@@ -53,8 +53,10 @@ def set_stats_parser(subparser):
     )
 
     log_parser.add_argument("--today",
+                            action="store_true",
                             help="Show today's work times (default)")
     log_parser.add_argument("-y", "--yesterday",
+                            action="store_true",
                             help="Show yesterday's work times")
     log_parser.add_argument("-d", "--day",
                             help="Show specific day's work times")
@@ -62,11 +64,13 @@ def set_stats_parser(subparser):
     log_parser.add_argument("--week",
                             help="Show specific week's work times")
     log_parser.add_argument("--last-week",
+                            action="store_true",
                             help="Show last week's work times")
 
     log_parser.add_argument("--month",
                             help="Show specific month's work times")
     log_parser.add_argument("--last-month",
+                            action="store_true",
                             help="Show last month's work times")
 
     log_parser.add_argument("-f", "--from",
