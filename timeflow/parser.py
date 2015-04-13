@@ -27,7 +27,7 @@ def stats(args):
         print("Parsing stats's --month option")
     elif args.last_month:
         print("Parsing stats's --last-month option")
-    elif args.from:
+    elif args._from:
         print("Parsing stats's --from option")
     elif args.to:
         print("Parsing stats's --to option")
@@ -70,7 +70,8 @@ def set_stats_parser(subparser):
                             help="Show last month's work times")
 
     log_parser.add_argument("-f", "--from",
-                            help="Show work times from specific date")
+                            help="Show work times from specific date",
+                            dest="_from")
     log_parser.add_argument("-t", "--to",
                             help="Show work times from to specific date")
 
