@@ -2,15 +2,35 @@ import argparse
 
 
 def log(args):
-    pass
+    print("Parsing log command")
 
 
 def edit(args):
-    pass
+    print("Parsing edit command")
+    if args.editor:
+        print("Parsing edit's --editor option")
 
 
 def stats(args):
-    pass
+    print("Parsing stats command")
+    if args.today:
+        print("Parsing stats's --today option")
+    elif args.yesterday:
+        print("Parsing stats's --yesterday option")
+    elif args.day:
+        print("Parsing stats's --day option")
+    elif args.week:
+        print("Parsing stats's --week option")
+    elif args.last_week:
+        print("Parsing stats's --last-week option")
+    elif args.month:
+        print("Parsing stats's --month option")
+    elif args.last_month:
+        print("Parsing stats's --last-month option")
+    elif args.from:
+        print("Parsing stats's --from option")
+    elif args.to:
+        print("Parsing stats's --to option")
 
 
 def set_log_parser(subparser):
