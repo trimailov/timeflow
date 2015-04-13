@@ -31,6 +31,8 @@ def stats(args):
         print("Parsing stats's --from option")
     elif args.to:
         print("Parsing stats's --to option")
+    else:
+        print("Parsing stats's --today option")
 
 
 def set_log_parser(subparser):
