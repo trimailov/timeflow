@@ -42,47 +42,47 @@ def set_log_parser(subparser):
 
 
 def set_edit_parser(subparser):
-    log_parser = subparser.add_parser("edit", help="Edit timelog file")
-    log_parser.add_argument("-e", "--editor", help="Explicitly set editor")
+    edit_parser = subparser.add_parser("edit", help="Edit timelog file")
+    edit_parser.add_argument("-e", "--editor", help="Explicitly set editor")
     # call edit() function, when processing edit command
-    log_parser.set_defaults(func=edit)
+    edit_parser.set_defaults(func=edit)
 
 
 def set_stats_parser(subparser):
-    log_parser = subparser.add_parser(
+    stats_parser = subparser.add_parser(
         "stats",
         help="Show how much time was spent working or slacking"
     )
 
-    log_parser.add_argument("--today",
-                            action="store_true",
-                            help="Show today's work times (default)")
-    log_parser.add_argument("-y", "--yesterday",
-                            action="store_true",
-                            help="Show yesterday's work times")
-    log_parser.add_argument("-d", "--day",
-                            help="Show specific day's work times")
+    stats_parser.add_argument("--today",
+                              action="store_true",
+                              help="Show today's work times (default)")
+    stats_parser.add_argument("-y", "--yesterday",
+                              action="store_true",
+                              help="Show yesterday's work times")
+    stats_parser.add_argument("-d", "--day",
+                              help="Show specific day's work times")
 
-    log_parser.add_argument("--week",
-                            help="Show specific week's work times")
-    log_parser.add_argument("--last-week",
-                            action="store_true",
-                            help="Show last week's work times")
+    stats_parser.add_argument("--week",
+                              help="Show specific week's work times")
+    stats_parser.add_argument("--last-week",
+                              action="store_true",
+                              help="Show last week's work times")
 
-    log_parser.add_argument("--month",
-                            help="Show specific month's work times")
-    log_parser.add_argument("--last-month",
-                            action="store_true",
-                            help="Show last month's work times")
+    stats_parser.add_argument("--month",
+                              help="Show specific month's work times")
+    stats_parser.add_argument("--last-month",
+                              action="store_true",
+                              help="Show last month's work times")
 
-    log_parser.add_argument("-f", "--from",
-                            help="Show work times from specific date",
-                            dest="_from")
-    log_parser.add_argument("-t", "--to",
-                            help="Show work times from to specific date")
+    stats_parser.add_argument("-f", "--from",
+                              help="Show work times from specific date",
+                              dest="_from")
+    stats_parser.add_argument("-t", "--to",
+                              help="Show work times from to specific date")
 
     # call stats() function, when processing stats command
-    log_parser.set_defaults(func=stats)
+    stats_parser.set_defaults(func=stats)
 
 
 def parse_args(args):
