@@ -1,5 +1,8 @@
 import argparse
-from timeflow.helpers import write_to_log_file
+import os
+import subprocess
+
+from timeflow.helpers import write_to_log_file, LOG_FILE
 
 
 def log(args):
@@ -7,9 +10,19 @@ def log(args):
 
 
 def edit(args):
-    print("Parsing edit command")
     if args.editor:
-        print("Parsing edit's --editor option")
+        subprocess.call([args.editor, LOG_FILE])
+    else:
+        subprocess.call(['echo', 'Trying to open $EDITOR'])
+        if os.environ.get('EDITOR'):
+            subprocess.call([os.environ.get('EDITOR'), LOG_FILE])
+        else:
+            subprocess.call([
+                "echo",
+                "Set your default editor in EDITOR environment variable or \n"
+                "call edit command with -e option and pass your editor, e.g.:\n"
+                "timeflow edit -e vim",
+            ])
 
 
 def stats(args):
