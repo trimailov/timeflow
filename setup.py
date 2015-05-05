@@ -7,5 +7,6 @@ setup(
     entry_points='''
         [console_scripts]
         timeflow=timeflow.main:main
+        tf=timeflow.main:main
     ''',
 )
