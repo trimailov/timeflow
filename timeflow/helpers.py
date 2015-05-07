@@ -5,7 +5,10 @@ import os
 LOG_FILE = os.path.expanduser('~') + '/.timelog/timeflow'
 DATETIME_FORMAT = "%Y-%m-%d %H:%M"
 DATE_FORMAT = "%Y-%m-%d"
+# length of date string
 DATE_LEN = 10
+# length of datetime string
+DATETIME_LEN = 16
 
 
 def write_to_log_file(message):
