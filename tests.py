@@ -1,17 +1,61 @@
+import os
+import shutil
+import subprocess
 import unittest
 
+from unittest import mock
+
+from timeflow import helpers
 from timeflow.parser import parse_args
 
 
 class TestParser(unittest.TestCase):
+    def setUp(self):
+        self.test_dir = os.path.dirname(os.path.realpath(__file__)) + '/test_dir/'
+        helpers.LOG_FILE = self.test_dir + '/test_log'
+
+    def tearDown(self):
+        try:
+            real_log = os.path.expanduser('~') + '/.timelog/timeflow'
+            if helpers.LOG_FILE is not real_log:
+                shutil.rmtree(self.test_dir)
+        except OSError:
+            pass
+
+    def mock_subprocess(*args, **kwargs):
+        return 'mocked'
+
     def test_log(self):
-        args = parse_args(['log'])
+        args = parse_args(['log', 'loging message'])
+        args.func(args)
+        self.assertEqual(len(helpers.read_log_file_lines()), 1)
+        # get message without datetime string and colon sign at the end of it
+        msg_line = helpers.read_log_file_lines()[0]
+        msg = msg_line[helpers.DATETIME_LEN+1:]
+        self.assertEqual(msg, ' loging message\n')
+
+        args = parse_args(['log', 'second loging message'])
+        args.func(args)
+        self.assertEqual(len(helpers.read_log_file_lines()), 2)
+        # get message without datetime string and colon sign at the end of it
+        msg_line = helpers.read_log_file_lines()[1]
+        msg = msg_line[helpers.DATETIME_LEN+1:]
+        self.assertEqual(msg, ' second loging message\n')
 
     def test_edit(self):
-        args = parse_args(['edit'])
+        subprocess.call = self.mock_subprocess
+        with mock.patch.dict('os.environ', {'EDITOR': 'vim'}):
+            args = parse_args(['edit'])
+            args.func(args)
+
+        with mock.patch.dict('os.environ', {'EDITOR': ''}):
+            args = parse_args(['edit'])
+            args.func(args)
 
     def test_edit_e(self):
+        subprocess.call = self.mock_subprocess
         args = parse_args(['edit', '-e', 'vim'])
+        args.func(args)
 
     def test_edit_editor(self):
         args = parse_args(['edit', '--editor', 'vim'])
