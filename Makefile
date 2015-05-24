@@ -1,5 +1,5 @@
 .PHONY: all
-all: env
+all: env install
 	env/bin/pip install -r requirements.txt
 
 .PHONY: env
