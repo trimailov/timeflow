@@ -1,8 +1,17 @@
 import argparse
+from datetime import datetime as dt
+from datetime import timedelta
 import os
 import subprocess
 
-from timeflow.helpers import write_to_log_file, LOG_FILE
+from timeflow.helpers import (
+    DATE_FORMAT,
+    LOG_FILE,
+    calculate_stats,
+    read_log_file_lines,
+    print_stats,
+    write_to_log_file,
+)
 
 
 def log(args):
@@ -27,10 +36,12 @@ def edit(args):
 
 def stats(args):
     print("Parsing stats command")
+    date_from = date_to = None
     if args.today:
-        print("Parsing stats's --today option")
+        date_from = date_to = dt.now().strftime(DATE_FORMAT)
     elif args.yesterday:
-        print("Parsing stats's --yesterday option")
+        yesterday_obj = dt.now() - timedelta(days=1)
+        date_from = date_to = yesterday_obj.strftime(DATE_FORMAT)
     elif args.day:
         print("Parsing stats's --day option")
     elif args.week:
@@ -46,7 +57,12 @@ def stats(args):
     elif args.to:
         print("Parsing stats's --to option")
     else:
-        print("Parsing stats's --today option")
+        date_from = date_to = dt.now().strftime(DATE_FORMAT)
+
+    work_time, slack_time = calculate_stats(read_log_file_lines(),
+                                            date_from,
+                                            date_to)
+    print_stats(work_time, slack_time)
 
 
 def set_log_parser(subparser):
