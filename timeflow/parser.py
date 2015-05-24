@@ -8,6 +8,9 @@ from timeflow.helpers import (
     DATE_FORMAT,
     LOG_FILE,
     calculate_stats,
+    get_last_month,
+    get_last_week,
+    get_month,
     read_log_file_lines,
     print_stats,
     write_to_log_file,
@@ -43,19 +46,21 @@ def stats(args):
         yesterday_obj = dt.now() - timedelta(days=1)
         date_from = date_to = yesterday_obj.strftime(DATE_FORMAT)
     elif args.day:
-        print("Parsing stats's --day option")
+        date_from = date_to = args.day
     elif args.week:
-        print("Parsing stats's --week option")
+        date_from, date_to = get_last_week()
     elif args.last_week:
-        print("Parsing stats's --last-week option")
+        date_from,  date_to = get_last_week()
     elif args.month:
-        print("Parsing stats's --month option")
+        date_from,  date_to = get_month()
     elif args.last_month:
-        print("Parsing stats's --last-month option")
-    elif args._from:
-        print("Parsing stats's --from option")
-    elif args.to:
-        print("Parsing stats's --to option")
+        date_from,  date_to = get_last_month()
+    elif args._from and not args.to:
+        date_from = args._from
+        date_to = dt.now().strftime(DATE_FORMAT)
+    elif args._from and args.to:
+        date_from = args._from
+        date_to = args.to
     else:
         date_from = date_to = dt.now().strftime(DATE_FORMAT)
 
