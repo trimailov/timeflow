@@ -1,4 +1,5 @@
 from datetime import datetime as dt
+from datetime import timedelta
 import os
 import subprocess
 
@@ -102,6 +103,44 @@ def get_time(seconds):
     hours = seconds // 3600
     minutes = seconds % 3600 // 60
     return hours, minutes
+
+
+def get_last_week():
+    week_ago = dt.now() - timedelta(weeks=1)
+    last_monday = week_ago - timedelta(days=week_ago.isocalendar()[2]-1)
+    last_sunday = last_monday + timedelta(days=6)
+
+    date_from = last_monday.strftime(DATE_FORMAT)
+    date_to = last_sunday.strftime(DATE_FORMAT)
+    return date_from, date_to
+
+
+def get_month(month, year=dt.now().year):
+    month = int(month)
+    days_in_month = {
+        1: 31,
+        2: 28,
+        3: 31,
+        4: 30,
+        5: 31,
+        6: 30,
+        7: 31,
+        8: 31,
+        9: 30,
+        10: 31,
+        11: 30,
+        12: 31,
+    }
+    date_from = '{}-{:02}-01'.format(year, month)
+    date_to = '{}-{:02}-{:02}'.format(year, month, days_in_month[month])
+    return date_from, date_to
+
+
+def get_last_month():
+    month = dt.now().month - 1
+    if month == 12:
+        return get_month(month, year=dt.now().year-1)
+    return get_month(month)
 
 
 def print_stats(work_time, slack_time):
