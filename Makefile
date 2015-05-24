@@ -37,4 +37,4 @@ freeze:
 
 .PHONY: clean
 clean:
-	rm -rf __pycache__ env timeflow.egg-info tags
+	rm -rf __pycache__ env timeflow.egg-info tags test_directory
