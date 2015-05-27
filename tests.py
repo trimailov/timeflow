@@ -11,7 +11,9 @@ from timeflow.parser import parse_args
 
 class TestParser(unittest.TestCase):
     def setUp(self):
-        self.test_dir = os.path.dirname(os.path.realpath(__file__)) + '/test_dir/'
+        self.test_dir = os.path.dirname(
+            os.path.realpath(__file__)
+        ) + '/test_dir/'
         helpers.LOG_FILE = self.test_dir + '/test_log'
 
     def tearDown(self):
