@@ -154,6 +154,21 @@ def print_stats(work_time, slack_time):
     subprocess.call(['echo', slack_string])
 
 
+def parse_line(line):
+    """Parses log line into logical units: time, project and message"""
+    date, time, message = re.split(r' ', line, maxsplit=2)
+    parsed_message = re.split(r': ', message, maxsplit=1)
+
+    # if parsed message has only project stated, then log is empty
+    if len(parsed_message) == 1:
+        project = parsed_message
+        log = ''
+    else:
+        project, log = parsed_message
+
+    return date, time, project, log
+
+
 def calculate_stats(lines, date_from, date_to):
     work_time = []
     slack_time = []
