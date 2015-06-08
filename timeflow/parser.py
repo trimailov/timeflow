@@ -38,7 +38,6 @@ def edit(args):
 
 
 def stats(args):
-    print("Parsing stats command")
     date_from = date_to = None
     if args.today:
         date_from = date_to = dt.now().strftime(DATE_FORMAT)
