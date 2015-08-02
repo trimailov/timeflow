@@ -1,12 +1,12 @@
 import sys
 
-from timeflow import parser
+from timeflow import arg_parser
 
 
 def main():
-    args = parser.parse_args(sys.argv[1:])
+    args = arg_parser.parse_args(sys.argv[1:])
     # if no command is passed, invoke help
     if hasattr(args, 'func'):
         args.func(args)
     else:
-        parser.parse_args(['--help'])
+        arg_parser.parse_args(['--help'])

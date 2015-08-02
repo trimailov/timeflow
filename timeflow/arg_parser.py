@@ -5,15 +5,18 @@ import os
 import subprocess
 
 from timeflow.helpers import (
-    DATE_FORMAT,
-    LOG_FILE,
-    calculate_stats,
+    DATE_FORMAT, LOG_FILE,
+    calculate_report,
     get_last_month,
     get_last_week,
     get_month,
     read_log_file_lines,
     print_stats,
     write_to_log_file,
+)
+
+from timeflow.log_parser import (
+    calculate_stats,
 )
 
 
@@ -62,6 +65,13 @@ def stats(args):
         date_to = args.to
     else:
         date_from = date_to = dt.now().strftime(DATE_FORMAT)
+
+    if args.report:
+        report = calculate_report(read_log_file_lines(),
+                                  date_from,
+                                  date_to)
+
+        print(report)
 
     work_time, slack_time = calculate_stats(read_log_file_lines(),
                                             date_from,
@@ -115,6 +125,10 @@ def set_stats_parser(subparser):
                               dest="_from")
     stats_parser.add_argument("-t", "--to",
                               help="Show work times from to specific date")
+
+    stats_parser.add_argument("-r", "--report",
+                              action="store_true",
+                              help="Show stats in report form")
 
     # call stats() function, when processing stats command
     stats_parser.set_defaults(func=stats)
