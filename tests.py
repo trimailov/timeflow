@@ -6,7 +6,7 @@ import unittest
 from unittest import mock
 
 from timeflow import helpers
-from timeflow.parser import parse_args
+from timeflow.arg_parser import parse_args
 
 
 class TestParser(unittest.TestCase):

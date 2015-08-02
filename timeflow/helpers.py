@@ -82,23 +82,6 @@ def date_ends(lines, date_to_find):
     return find_date_line(lines, date_to_find, reverse=True)
 
 
-def is_arrived(line):
-    "Returns True if log line marks beggining of the day"
-    line = line.replace(' ', '').replace('\n', '').replace('.', '')
-    if line[DATETIME_LEN:].lower() == 'arrived':
-        return True
-    return False
-
-
-def is_slack(line):
-    "Returns True if current log line is slack"
-    # slack entries end with '**' and can also have linefeed char
-    line = line.replace(' ', '').replace('\n', '')
-    if line[-2:] == "**":
-        return True
-    return False
-
-
 def get_time(seconds):
     hours = seconds // 3600
     minutes = seconds % 3600 // 60
@@ -152,53 +135,3 @@ def print_stats(work_time, slack_time):
 
     subprocess.call(['echo', work_string])
     subprocess.call(['echo', slack_string])
-
-
-def parse_line(line):
-    """Parses log line into logical units: time, project and message"""
-    date, time, message = re.split(r' ', line, maxsplit=2)
-    parsed_message = re.split(r': ', message, maxsplit=1)
-
-    # if parsed message has only project stated, then log is empty
-    if len(parsed_message) == 1:
-        project = parsed_message
-        log = ''
-    else:
-        project, log = parsed_message
-
-    return date, time, project, log
-
-
-def calculate_stats(lines, date_from, date_to):
-    work_time = []
-    slack_time = []
-
-    line_begins = date_begins(lines, date_from)
-    line_ends = date_ends(lines, date_to)
-
-    date_not_found = (line_begins is None or line_ends < line_begins)
-    if date_not_found:
-        return work_time, slack_time
-
-    for i, line in enumerate(lines[line_begins:line_ends+1]):
-        # if we got to the last line - stop
-        if line_begins+i+1 > line_ends:
-            break
-
-        next_line = lines[line_begins+i+1]
-
-        line_time = dt.strptime(line[:DATETIME_LEN], DATETIME_FORMAT)
-        if is_arrived(next_line):
-            continue
-
-        else:
-            next_line_time = dt.strptime(next_line[:DATETIME_LEN],
-                                         DATETIME_FORMAT)
-            timedelta = (next_line_time - line_time).seconds
-
-        if is_slack(next_line):
-            slack_time.append(timedelta)
-        else:
-            work_time.append(timedelta)
-
-    return work_time, slack_time
