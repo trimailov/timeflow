@@ -114,7 +114,7 @@ def calculate_stats(lines, date_from, date_to):
         if line_date != next_line_date:
             continue
 
-        if line.is_slack:
+        if next_line.is_slack:
             slack_time.append(calc_time_diff(line, next_line))
         else:
             work_time.append(calc_time_diff(line, next_line))
