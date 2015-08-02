@@ -6,7 +6,6 @@ import subprocess
 
 from timeflow.helpers import (
     DATE_FORMAT, LOG_FILE,
-    calculate_report,
     get_last_month,
     get_last_week,
     get_month,
@@ -16,6 +15,7 @@ from timeflow.helpers import (
 )
 
 from timeflow.log_parser import (
+    calculate_report,
     calculate_stats,
 )
 

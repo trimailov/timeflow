@@ -1,4 +1,4 @@
-from collections import namedtuple
+from collections import defaultdict, namedtuple
 import re
 
 from datetime import datetime as dt
@@ -120,3 +120,46 @@ def calculate_stats(lines, date_from, date_to):
             work_time.append(calc_time_diff(line, next_line))
 
     return work_time, slack_time
+
+
+def calculate_report(lines, date_from, date_to):
+    """Creates and returns report dictionaries
+
+    Report dicts have form like this:
+    {<Project>: {<log_message>: <accumulative time>},
+                {<log_message1>: <accumulative time1>}}
+    """
+    work_dict = defaultdict(lambda: defaultdict(dict))
+    slack_dict = defaultdict(lambda: defaultdict(dict))
+
+    line_begins = date_begins(lines, date_from)
+    line_ends = date_ends(lines, date_to)
+
+    date_not_found = (line_begins is None or line_ends < line_begins)
+    if date_not_found:
+        return work_dict, slack_dict
+
+    data = parse_lines()
+
+    for i, line in enumerate(data[line_begins:line_ends+1]):
+        # if we got to the last line - stop
+        if line_begins+i+1 > line_ends:
+            break
+
+        next_line = data[line_begins+i+1]
+
+        line_date = line.date
+        next_line_date = next_line.date
+        # if it's day switch, skip this cycle
+        if line_date != next_line_date:
+            continue
+
+        time_diff = calc_time_diff(line, next_line)
+
+
+        if next_line.is_slack:
+            slack_dict[next_line.project][next_line.log] = time_diff
+        else:
+            work_dict[next_line.project][next_line.log] = time_diff
+
+    return work_dict, slack_dict
