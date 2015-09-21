@@ -135,3 +135,11 @@ def print_stats(work_time, slack_time):
 
     subprocess.call(['echo', work_string])
     subprocess.call(['echo', slack_string])
+
+
+def print_report(work_report_dict, slack_report_dict):
+    work_report = ""
+    for project in work_report_dict:
+        work_report = "{}\n".format(project)
+        for log in project:
+            work_report += "{log}: {hours}h {min}min"

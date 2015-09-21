@@ -156,7 +156,6 @@ def calculate_report(lines, date_from, date_to):
 
         time_diff = calc_time_diff(line, next_line)
 
-
         if next_line.is_slack:
             slack_dict[next_line.project][next_line.log] = time_diff
         else:
