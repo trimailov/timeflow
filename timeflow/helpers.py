@@ -4,7 +4,7 @@ import os
 import subprocess
 
 
-LOG_FILE = os.path.expanduser('~') + '/.timelog/timeflow'
+LOG_FILE = os.path.expanduser('~') + '/.timeflow'
 DATETIME_FORMAT = "%Y-%m-%d %H:%M"
 DATE_FORMAT = "%Y-%m-%d"
 # length of date string
