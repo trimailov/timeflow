@@ -138,7 +138,7 @@ def print_stats(work_time, slack_time):
 
 
 def create_report(report_dict):
-    report = ""
+    reports = []
     for project in report_dict:
         report = "{}:\n".format(project)
         project_report = report_dict[project]
@@ -149,7 +149,8 @@ def create_report(report_dict):
                 hours=hr,
                 minutes=mn,
             )
-    return report
+        reports.append(report)
+    return '\n'.join(reports)
 
 
 def print_report(work_report_dict, slack_report_dict):
