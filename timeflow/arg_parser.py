@@ -11,6 +11,7 @@ from timeflow.helpers import (
     get_month,
     read_log_file_lines,
     print_stats,
+    print_report,
     write_to_log_file,
 )
 
@@ -67,11 +68,11 @@ def stats(args):
         date_from = date_to = dt.now().strftime(DATE_FORMAT)
 
     if args.report:
-        report = calculate_report(read_log_file_lines(),
-                                  date_from,
-                                  date_to)
+        work_report, slack_report = calculate_report(read_log_file_lines(),
+                                                     date_from,
+                                                     date_to)
 
-        print(report)
+        print_report(work_report, slack_report)
 
     work_time, slack_time = calculate_stats(read_log_file_lines(),
                                             date_from,
