@@ -151,8 +151,7 @@ def create_report(report_dict):
 
 
 def print_report(work_report_dict, slack_report_dict):
-    work_report = ""
-    for project in work_report_dict:
-        work_report = "{}\n".format(project)
-        for log in project:
-            work_report += "{log}: {hours}h {min}min"
+    work_report = create_report(work_report_dict)
+    slack_report = create_report(slack_report_dict)
+    print(work_report)
+    print(slack_report)
