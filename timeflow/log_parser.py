@@ -44,9 +44,16 @@ def parse_message(message):
 
 
 def find_slack(project, log):
-    if project[-2:] == "**" or log[-2:] == "**":
+    if project.endswith("**") or log.endswith("**"):
         return True
     return False
+
+
+def strip_log(string):
+    "Strips string from slack marks and leading/trailing spaces"
+    if string.endswith("**"):
+        string = string[:-2]
+    return string.strip()
 
 
 def parse_line(line):
@@ -156,9 +163,11 @@ def calculate_report(lines, date_from, date_to):
 
         time_diff = calc_time_diff(line, next_line)
 
+        project = strip_log(next_line.project)
+        log = strip_log(next_line.log)
         if next_line.is_slack:
-            slack_dict[next_line.project][next_line.log] = time_diff
+            slack_dict[project][log] = time_diff
         else:
-            work_dict[next_line.project][next_line.log] = time_diff
+            work_dict[project][log] = time_diff
 
     return work_dict, slack_dict
