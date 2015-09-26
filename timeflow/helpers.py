@@ -146,10 +146,10 @@ def create_report(report_dict):
         for log in project_report:
             total_seconds += project_report[log]
             hr, mn = get_time(project_report[log])
-            report += "    {hours}h {minutes}min: {log}\n".format(
-                log=log,
+            report += "    {hours}h {minutes:02}min: {log}\n".format(
                 hours=hr,
                 minutes=mn,
+                log=log
             )
         hr, mn = get_time(total_seconds)
         report += "Total: {hours}h {minutes:02}min\n".format(
