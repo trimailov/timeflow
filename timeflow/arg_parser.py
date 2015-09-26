@@ -43,9 +43,7 @@ def edit(args):
 
 def stats(args):
     date_from = date_to = None
-    if args.today:
-        date_from = date_to = dt.now().strftime(DATE_FORMAT)
-    elif args.yesterday:
+    if args.yesterday:
         yesterday_obj = dt.now() - timedelta(days=1)
         date_from = date_to = yesterday_obj.strftime(DATE_FORMAT)
     elif args.day:
@@ -65,6 +63,7 @@ def stats(args):
         date_from = args._from
         date_to = args.to
     else:
+        # default action is to show today's  stats
         date_from = date_to = dt.now().strftime(DATE_FORMAT)
 
     if args.report:
