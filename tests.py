@@ -14,12 +14,16 @@ class TestParser(unittest.TestCase):
         self.test_dir = os.path.dirname(
             os.path.realpath(__file__)
         ) + '/test_dir/'
+
+        self.real_log_file = helpers.LOG_FILE
+
+        # overwrite log file setting, to define file to be used in tests
         helpers.LOG_FILE = self.test_dir + '/test_log'
 
     def tearDown(self):
         try:
-            real_log = os.path.expanduser('~') + '/.timelog/timeflow'
-            if helpers.LOG_FILE is not real_log:
+            # if test file is not the same as real log file - remove it
+            if helpers.LOG_FILE is not self.real_log_file:
                 shutil.rmtree(self.test_dir)
         except OSError:
             pass
