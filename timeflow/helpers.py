@@ -142,13 +142,20 @@ def create_report(report_dict):
     for project in report_dict:
         report = "{}:\n".format(project)
         project_report = report_dict[project]
+        total_seconds = 0
         for log in project_report:
+            total_seconds += project_report[log]
             hr, mn = get_time(project_report[log])
             report += "    {hours}h {minutes}min: {log}\n".format(
                 log=log,
                 hours=hr,
                 minutes=mn,
             )
+        hr, mn = get_time(total_seconds)
+        report += "Total: {hours}h {minutes:02}min\n".format(
+            hours=hr,
+            minutes=mn
+        )
         reports.append(report)
     return '\n'.join(reports)
 
