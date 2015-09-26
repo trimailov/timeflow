@@ -1,0 +1,12 @@
+2015-01-01 08:00: Arrived.
+2015-01-01 09:15: Timeflow: start project
+2015-01-01 10:00: Breakfast **
+2015-01-01 10:25: Slack: watch YouTube**
+2015-01-01 12:00: Django: read documentation
+
+2015-01-02 08:25: Arrived.
+2015-01-02 09:15: Timeflow: create README file
+2015-01-02 10:00: Work: finish task #115
+2015-01-02 10:25: Slack: break **
+2015-01-02 12:00: Work: working on task #42
+2015-01-02 13:05: Lunch **
