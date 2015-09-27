@@ -8,12 +8,12 @@ env:
 
 .PHONY: test
 test:
-	env/bin/python tests.py
+	env/bin/python tests/tests.py
 
 .PHONY: coverage
 coverage:
 	rm -rf htmlcov/ .coverage
-	env/bin/coverage run --branch --omit='env/*' tests.py
+	env/bin/coverage run --branch --omit='env/*' tests/tests.py
 	env/bin/coverage report -m
 	env/bin/coverage html
 	@echo "Now you can use:"
