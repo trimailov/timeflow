@@ -1,7 +1,7 @@
+from collections import OrderedDict
 from datetime import datetime as dt
 from datetime import timedelta
 import os
-import subprocess
 
 
 LOG_FILE = os.path.expanduser('~') + '/.timeflow'
@@ -139,6 +139,7 @@ def print_stats(work_time, slack_time):
 
 def create_report(report_dict):
     reports = []
+    report_dict = OrderedDict(sorted(report_dict.items()))
     for project in report_dict:
         report = "{}:\n".format(project)
         project_report = report_dict[project]
