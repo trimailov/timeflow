@@ -1,5 +1,4 @@
 import os
-import shutil
 import subprocess
 import unittest
 
@@ -11,27 +10,20 @@ from timeflow.arg_parser import parse_args
 
 class TestParser(unittest.TestCase):
     def setUp(self):
-        self.test_dir = os.path.dirname(
-            os.path.realpath(__file__)
-        ) + '/test_dir/'
-
+        self.test_dir = os.path.dirname(os.path.realpath(__file__))
         self.real_log_file = helpers.LOG_FILE
 
         # overwrite log file setting, to define file to be used in tests
-        helpers.LOG_FILE = self.test_dir + '/test_log'
-
-    def tearDown(self):
-        try:
-            # if test file is not the same as real log file - remove it
-            if helpers.LOG_FILE is not self.real_log_file:
-                shutil.rmtree(self.test_dir)
-        except OSError:
-            pass
+        helpers.LOG_FILE = self.test_dir + '/fake_log.txt'
 
     def mock_subprocess(*args, **kwargs):
         return 'mocked'
 
     def test_log(self):
+        "Tests log command"
+        # this tests needs separate log file
+        helpers.LOG_FILE = self.test_dir + '/auto_fake_log.txt'
+
         args = parse_args(['log', 'loging message'])
         args.func(args)
         self.assertEqual(len(helpers.read_log_file_lines()), 1)
@@ -47,6 +39,14 @@ class TestParser(unittest.TestCase):
         msg_line = helpers.read_log_file_lines()[1]
         msg = msg_line[helpers.DATETIME_LEN+1:]
         self.assertEqual(msg, ' second loging message\n')
+
+        # as this test creates separate log file - remove it
+        try:
+            # if test file is not the same as real log file - remove it
+            if helpers.LOG_FILE is not self.real_log_file:
+                os.remove(helpers.LOG_FILE)
+        except OSError:
+            pass
 
     def test_edit(self):
         subprocess.call = self.mock_subprocess
