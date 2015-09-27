@@ -53,7 +53,7 @@ def stats(args):
     elif args.last_week:
         date_from,  date_to = get_last_week()
     elif args.month:
-        date_from,  date_to = get_month()
+        date_from,  date_to = get_month(args.month)
     elif args.last_month:
         date_from,  date_to = get_last_month()
     elif args._from and not args.to:
