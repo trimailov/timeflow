@@ -166,8 +166,20 @@ def calculate_report(lines, date_from, date_to):
         project = strip_log(next_line.project)
         log = strip_log(next_line.log)
         if next_line.is_slack:
-            slack_dict[project][log] = time_diff
+            # if log message is identical add time_diff
+            # to total time of the log
+            if slack_dict[project][log]:
+                total_time = slack_dict[project][log]
+                total_time += time_diff
+                slack_dict[project][log] = total_time
+            else:
+                slack_dict[project][log] = time_diff
         else:
-            work_dict[project][log] = time_diff
+            if work_dict[project][log]:
+                total_time = work_dict[project][log]
+                total_time += time_diff
+                work_dict[project][log] = total_time
+            else:
+                work_dict[project][log] = time_diff
 
     return work_dict, slack_dict
