@@ -1,0 +1,5 @@
+0.1.1
+-----
+
+- Fix report generation. Sum up total time of same activities instead of
+  showing time of the last activity
