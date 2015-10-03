@@ -93,11 +93,25 @@ def get_time(seconds):
 
 def get_last_week():
     week_ago = dt.now() - timedelta(weeks=1)
-    last_monday = week_ago - timedelta(days=week_ago.isocalendar()[2]-1)
+
+    weekday = week_ago.isocalendar()[2] - 1
+    last_monday = week_ago - timedelta(days=weekday)
     last_sunday = last_monday + timedelta(days=6)
 
     date_from = last_monday.strftime(DATE_FORMAT)
     date_to = last_sunday.strftime(DATE_FORMAT)
+    return date_from, date_to
+
+
+def get_week_range(date):
+    date = dt.strptime(date, DATE_FORMAT)
+
+    weekday = date.isocalendar()[2] - 1
+    monday = date - timedelta(days=weekday)
+    sunday = monday + timedelta(days=6)
+
+    date_from = monday.strftime(DATE_FORMAT)
+    date_to = sunday.strftime(DATE_FORMAT)
     return date_from, date_to
 
 
