@@ -1,6 +1,8 @@
 from collections import OrderedDict
 from datetime import datetime as dt
 from datetime import timedelta
+
+import calendar
 import os
 
 
@@ -100,22 +102,11 @@ def get_last_week():
 
 def get_month(month, year=dt.now().year):
     month = int(month)
-    days_in_month = {
-        1: 31,
-        2: 28,
-        3: 31,
-        4: 30,
-        5: 31,
-        6: 30,
-        7: 31,
-        8: 31,
-        9: 30,
-        10: 31,
-        11: 30,
-        12: 31,
-    }
+    days_in_month = calendar.monthrange(year, month)[1]
+
     date_from = '{}-{:02}-01'.format(year, month)
-    date_to = '{}-{:02}-{:02}'.format(year, month, days_in_month[month])
+    date_to = '{}-{:02}-{:02}'.format(year, month, days_in_month)
+
     return date_from, date_to
 
 
