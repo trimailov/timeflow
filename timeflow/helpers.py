@@ -4,6 +4,7 @@ from datetime import timedelta
 
 import calendar
 import os
+import sys
 
 
 LOG_FILE = os.path.expanduser('~') + '/.timeflow'
@@ -100,8 +101,34 @@ def get_last_week():
     return date_from, date_to
 
 
-def get_month(month, year=dt.now().year):
-    month = int(month)
+def parse_month_arg(arg):
+    def is_int(arg):
+        try:
+            int(arg)
+            return True
+        except ValueError:
+            return False
+
+    if is_int(arg):
+        # if it's only integer - it's only month number
+        month = int(arg)
+        if month < 1 or month > 12:
+            sys.exit('Month must be in range from 1 to 12')
+        return dt.now().year, month
+
+    # otherwise argument must be in form 'YYYY-MM'
+    year, month = arg.split('-')
+    if is_int(year) and is_int(month):
+        month = int(month)
+        if month < 1 or month > 12:
+            sys.exit('Month must be in range from 1 to 12')
+        return int(year), month
+    else:
+        sys.exit('Argument in form of YYYY-MM is expected, e.g. 2015-9')
+
+
+def get_month_range(arg):
+    year, month = parse_month_arg(arg)
     days_in_month = calendar.monthrange(year, month)[1]
 
     date_from = '{}-{:02}-01'.format(year, month)
@@ -113,8 +140,8 @@ def get_month(month, year=dt.now().year):
 def get_last_month():
     month = dt.now().month - 1
     if month == 12:
-        return get_month(month, year=dt.now().year-1)
-    return get_month(month)
+        return get_month_range(month, year=dt.now().year-1)
+    return get_month_range(month)
 
 
 def print_stats(work_time, slack_time):

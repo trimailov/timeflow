@@ -8,7 +8,7 @@ from timeflow.helpers import (
     DATE_FORMAT, LOG_FILE,
     get_last_month,
     get_last_week,
-    get_month,
+    get_month_range,
     read_log_file_lines,
     print_stats,
     print_report,
@@ -53,7 +53,7 @@ def stats(args):
     elif args.last_week:
         date_from,  date_to = get_last_week()
     elif args.month:
-        date_from,  date_to = get_month(args.month)
+        date_from,  date_to = get_month_range(args.month)
     elif args.last_month:
         date_from,  date_to = get_last_month()
     elif args._from and not args.to:
