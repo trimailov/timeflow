@@ -115,7 +115,11 @@ class TestArgParser(unittest.TestCase):
         self.assertEqual(output, "Work: 02h 50min\nSlack: 01h 10min")
 
     def test_stats_week(self):
-        args = parse_args(['stats', '--week', '2015-01-01'])
+        output = self.mock_date_and_stdout(
+            ['stats', '--week', '2015-01-02'],
+            date_value=datetime.datetime(2015, 2, 5)
+        )
+        self.assertEqual(output, "Work: 06h 00min\nSlack: 02h 40min")
 
     @mock.patch('timeflow.helpers.dt', FakeDateTime)
     @mock.patch('timeflow.arg_parser.dt', FakeDateTime)
@@ -132,6 +136,18 @@ class TestArgParser(unittest.TestCase):
     def test_stats_month(self):
         output = self.mock_date_and_stdout(
             ['stats', '--month', '1'],
+            date_value=datetime.datetime(2015, 1, 5)
+        )
+        self.assertEqual(output, "Work: 06h 00min\nSlack: 02h 40min")
+
+        output = self.mock_date_and_stdout(
+            ['stats', '--month', '2015-1'],
+            date_value=datetime.datetime(2015, 1, 5)
+        )
+        self.assertEqual(output, "Work: 06h 00min\nSlack: 02h 40min")
+
+        output = self.mock_date_and_stdout(
+            ['stats', '--month', '2015-01'],
             date_value=datetime.datetime(2015, 1, 5)
         )
         self.assertEqual(output, "Work: 06h 00min\nSlack: 02h 40min")
