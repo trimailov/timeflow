@@ -205,6 +205,7 @@ def create_report(report_dict):
 def print_report(work_report_dict, slack_report_dict):
     work_report = create_report(work_report_dict)
     slack_report = create_report(slack_report_dict)
+    print('-' * 30, 'WORK', '-' * 31)
     print(work_report)
-    print('-' * 80)
+    print('-' * 30, 'SLACK', '-' * 30)
     print(slack_report)
