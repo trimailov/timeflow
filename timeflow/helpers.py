@@ -194,7 +194,7 @@ def create_report(report_dict):
                 )
 
         hr, mn = get_time(total_seconds)
-        report += "Total: {hours}h {minutes:02}min\n".format(
+        report += "    Total: {hours}h {minutes:02}min\n".format(
             hours=hr,
             minutes=mn
         )
