@@ -1,4 +1,4 @@
-from collections import defaultdict, namedtuple
+from collections import defaultdict
 import re
 
 from datetime import datetime as dt
@@ -9,6 +9,17 @@ from timeflow.helpers import (
     date_ends,
     read_log_file_lines,
 )
+
+
+class Line():
+    __slots__ = ['date', 'time', 'project', 'log', 'is_slack']
+
+    def __init__(self, date, time, project, log, is_slack):
+        self.date = date
+        self.time = time
+        self.project = project
+        self.log = log
+        self.is_slack = is_slack
 
 
 def clean_line(time, project, log):
@@ -69,7 +80,6 @@ def parse_line(line):
     time, project, log = clean_line(time, project, log)
     is_slack = find_slack(project, log)
 
-    Line = namedtuple('Line', ['date', 'time', 'project', 'log', 'is_slack'])
     return Line(date, time, project, log, is_slack)
 
 
