@@ -1,3 +1,11 @@
+0.1.2
+-----
+
+- Ditch namedtuple, use class to mock structure insted. 5-6 times speed up
+  of stats and report generation
+- Better readable report printouts
+- Correct work of --month, --last-month, --week options
+
 0.1.1
 -----
 
