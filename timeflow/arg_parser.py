@@ -4,6 +4,7 @@ from datetime import timedelta
 import os
 import subprocess
 
+from timeflow import __version__
 from timeflow.helpers import (
     DATE_FORMAT, LOG_FILE,
     get_last_month,
@@ -137,6 +138,11 @@ def set_stats_parser(subparser):
 
 def parse_args(args):
     parser = argparse.ArgumentParser()
+
+    parser.add_argument("-v", "--version",
+                        help="Show timeflow's version",
+                        action="version",
+                        version="timeflow {}".format(__version__))
 
     subparser = parser.add_subparsers(help="sub-command help")
     set_log_parser(subparser)
