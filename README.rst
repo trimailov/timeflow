@@ -2,6 +2,8 @@ timeflow
 ========
 simple CLI time logger, inspired by `gtimelog <https://github.com/gtimelog/gtimelog>`_
 
+.. image:: img/description.png
+
 Description
 -----------
 ``timeflow`` is a simple CLI time logger, used for logging your activities and
