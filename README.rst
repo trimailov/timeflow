@@ -9,6 +9,13 @@ featuring simple statistics and reporting capabilities
 
 ``timeflow`` can be called using either ``tf`` or ``timeflow`` commands
 
+Install
+-------
+
+``pip3 install timeflow``
+
+Written in ``python3``. Best user experience with ``python3``.
+
 Tutorial
 -----------------
 ::
