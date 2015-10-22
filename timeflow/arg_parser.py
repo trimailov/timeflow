@@ -44,6 +44,7 @@ def edit(args):
 
 
 def stats(args):
+    today = False
     date_from = date_to = None
     if args.yesterday:
         yesterday_obj = dt.now() - timedelta(days=1)
@@ -67,6 +68,7 @@ def stats(args):
     else:
         # default action is to show today's  stats
         date_from = date_to = dt.now().strftime(DATE_FORMAT)
+        today = True
 
     if args.report:
         work_report, slack_report = calculate_report(read_log_file_lines(),
@@ -75,10 +77,10 @@ def stats(args):
 
         print_report(work_report, slack_report)
 
-    work_time, slack_time = calculate_stats(read_log_file_lines(),
-                                            date_from,
-                                            date_to)
-    print_stats(work_time, slack_time)
+    work_time, slack_time, today_work_time = calculate_stats(
+        read_log_file_lines(), date_from, date_to, today=today
+    )
+    print_stats(work_time, slack_time, today_work_time)
 
 
 def set_log_parser(subparser):

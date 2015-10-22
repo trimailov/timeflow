@@ -84,7 +84,7 @@ def parse_line(line):
 
 
 def parse_lines():
-    """Returns a list of tuples representing log file"""
+    """Returns a list of objects representing log file"""
     lines = read_log_file_lines()
     data = []
     for line in lines:
@@ -104,7 +104,7 @@ def calc_time_diff(line, next_line):
     return (next_line_time - line_time).seconds
 
 
-def calculate_stats(lines, date_from, date_to):
+def calculate_stats(lines, date_from, date_to, today=False):
     work_time = []
     slack_time = []
 
@@ -136,7 +136,15 @@ def calculate_stats(lines, date_from, date_to):
         else:
             work_time.append(calc_time_diff(line, next_line))
 
-    return work_time, slack_time
+    today_work_time = None
+    if today:
+        today_start_time = dt.strptime(
+            "{} {}".format(data[line_begins].date, data[line_begins].time),
+            DATETIME_FORMAT
+        )
+        today_work_time = (dt.now() - today_start_time).seconds
+
+    return work_time, slack_time, today_work_time
 
 
 def calculate_report(lines, date_from, date_to):

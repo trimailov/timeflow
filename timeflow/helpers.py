@@ -160,7 +160,7 @@ def get_last_month():
     return get_month_range(month)
 
 
-def print_stats(work_time, slack_time):
+def print_stats(work_time, slack_time, today_work_time):
     work_hours, work_minutes = get_time(sum(work_time))
     slack_hours, slack_minutes = get_time(sum(slack_time))
 
@@ -169,6 +169,13 @@ def print_stats(work_time, slack_time):
 
     print(work_string)
     print(slack_string)
+
+    if today_work_time:
+        today_hours, today_minutes = get_time(today_work_time)
+        work_string = '\nToday working for: {:02}h {:02}min'.format(
+            today_hours, today_minutes
+        )
+        print(work_string)
 
 
 def create_report(report_dict):
