@@ -20,7 +20,7 @@ pip-compile:
 
 .PHONY: test
 test:
-	env/bin/py.test
+	env/bin/py.test timeflow/tests/tests.py
 
 .PHONY: coverage
 coverage:
