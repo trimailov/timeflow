@@ -20,16 +20,11 @@ pip-compile:
 
 .PHONY: test
 test:
-	env/bin/python tests/tests.py
+	env/bin/py.test
 
 .PHONY: coverage
 coverage:
-	rm -rf htmlcov/ .coverage
-	env/bin/coverage run --branch --omit='env/*' tests/tests.py
-	env/bin/coverage report -m
-	env/bin/coverage html
-	@echo "Now you can use:"
-	@echo "open htmlcov/index.html"
+	env/bin/py.test --cov=timeflow tests/
 
 .PHONY: install
 install:
@@ -44,9 +39,10 @@ tags:
 	ctags -R
 
 .PHONY: clean
-clean:
-	rm -rf __pycache__ env timeflow.egg-info tags test_directory
+clean: remove_pyc
+	rm -rf env timeflow.egg-info tags
 
 .PHONY: remove_pyc
 remove_pyc:
 	find . -name "*.pyc" -delete
+	find . -name "__pycache__" -delete
