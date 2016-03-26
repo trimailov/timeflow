@@ -4,6 +4,12 @@
 2014-12-24 10:25: Slack: do nothing **
 2014-12-24 12:00: Pytest: read the docs
 
+2014-12-31 08:00: Arrived.
+2014-12-31 09:15: New-year: prepairing for party
+2014-12-31 10:00: Breakfast **
+2014-12-31 10:25: Slack: do nothing **
+2014-12-31 12:00: Books: read them
+
 2015-01-01 08:00: Arrived.
 2015-01-01 09:15: Timeflow: start project
 2015-01-01 10:00: Breakfast **
