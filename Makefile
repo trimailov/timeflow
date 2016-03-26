@@ -1,10 +1,22 @@
-.PHONY: all
 all: env install
-	env/bin/pip install -r requirements.txt
+dev: env pip-tools pip install
 
 .PHONY: env
 env:
 	pyvenv env
+
+.PHONY: pip-tools
+pip-tools:
+	env/bin/pip install --upgrade pip
+	env/bin/pip install pip-tools
+
+.PHONY: pip
+pip: pip-compile
+	env/bin/pip-sync requirements.txt
+
+.PHONY: pip-compile
+pip-compile:
+	env/bin/pip-compile requirements.in
 
 .PHONY: test
 test:
@@ -30,10 +42,6 @@ uninstall:
 .PHONY: tags
 tags:
 	ctags -R
-
-.PHONY: freeze
-freeze:
-	env/bin/pip freeze > requirements.txt
 
 .PHONY: clean
 clean:
