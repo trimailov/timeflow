@@ -153,7 +153,8 @@ def get_month_range(arg):
 def get_last_month():
     current_month = dt.datetime.now().replace(day=1)
     last_month = current_month - dt.timedelta(days=1)
-    return get_month_range(last_month.month, last_month.year)
+    arg = "{}-{}".format(last_month.year, last_month.month)
+    return get_month_range(arg)
 
 
 def print_stats(work_time, slack_time, today_work_time):
