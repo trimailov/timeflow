@@ -9,9 +9,10 @@ from collections import OrderedDict
 from pkg_resources import get_distribution
 
 
+# SETTINGS
 __version__ = get_distribution("timeflow").version
 
-LOG_FILE = os.path.expanduser('~') + '/.timeflow'
+LOG_FILE = os.path.expanduser('~') + '/.timeflow2'
 DATETIME_FORMAT = "%Y-%m-%d %H:%M"
 DATE_FORMAT = "%Y-%m-%d"
 # length of date string
