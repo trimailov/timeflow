@@ -2,3 +2,5 @@ coverage==3.7.1
 gnureadline==6.3.3
 ipdb==0.8
 ipython==3.1.0
+nose==1.3.7
+-e git+git@github.com:trimailov/timeflow.git@b742fb58128852a3832592ec6eed57e72f4d2ff8#egg=timeflow
