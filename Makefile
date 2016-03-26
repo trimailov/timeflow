@@ -24,7 +24,7 @@ test:
 
 .PHONY: coverage
 coverage:
-	env/bin/py.test --cov=timeflow tests/
+	env/bin/py.test --cov=timeflow --cov-report=html timeflow/tests/tests.py
 
 .PHONY: install
 install:
