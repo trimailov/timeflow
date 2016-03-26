@@ -89,3 +89,6 @@ target/
 
 ### Misc ###
 tags
+
+# genereated by pip-tools from `requirements.in`
+requirements.txt
