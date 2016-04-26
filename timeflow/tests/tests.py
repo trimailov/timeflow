@@ -107,6 +107,24 @@ def test_stats_day(patch_datetime_now, capsys):
     assert result == out
 
 
+def test_stats_this_week(patch_datetime_now, capsys):
+    test_dir = os.path.dirname(os.path.realpath(__file__))
+
+    # overwrite log file setting, to define file to be used in tests
+    timeflow.LOG_FILE = test_dir + '/fake_log.txt'
+
+    # run stats command
+    parser = cli.create_parser()
+    args = parser.parse_args(['stats', '--this-week'])
+    args.func(args)
+
+    # extract STDOUT, as stats command prints to it
+    out, err = capsys.readouterr()
+    result = ("Work: 08h 50min\n"
+              "Slack: 03h 50min\n")
+    assert result == out
+
+
 def test_stats_last_week(patch_datetime_now, capsys):
     test_dir = os.path.dirname(os.path.realpath(__file__))
 
