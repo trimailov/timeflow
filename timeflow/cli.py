@@ -38,6 +38,8 @@ def stats(args):
         date_from = date_to = args.day
     elif args.week:
         date_from, date_to = timeflow.get_week_range(args.week)
+    elif args.this_week:
+        date_from, date_to = timeflow.get_this_week()
     elif args.last_week:
         date_from,  date_to = timeflow.get_last_week()
     elif args.month:
@@ -105,6 +107,11 @@ def create_parser():
     stats_parser.add_argument(
         "--week",
         help="Show specific week's work times"
+    )
+    stats_parser.add_argument(
+        "--this-week",
+        action="store_true",
+        help="Show current week's work times"
     )
     stats_parser.add_argument(
         "--last-week",

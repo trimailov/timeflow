@@ -90,6 +90,18 @@ def get_time(seconds):
     return hours, minutes
 
 
+def get_this_week():
+    now = dt.datetime.now()
+
+    weekday = now.isocalendar()[2] - 1
+    this_monday = now - dt.timedelta(days=weekday)
+    this_sunday = this_monday + dt.timedelta(days=6)
+
+    date_from = this_monday.strftime(DATE_FORMAT)
+    date_to = this_sunday.strftime(DATE_FORMAT)
+    return date_from, date_to
+
+
 def get_last_week():
     week_ago = dt.datetime.now() - dt.timedelta(weeks=1)
 
