@@ -1,0 +1,7 @@
+[0.2]
+
+-- refactored into more sane file configuration
+  -- no need to prematurely divide project into some not known parts,
+     now there is 1 file for argument parser and 1 file for time logging logic
+-- use pytest
+-- show how much time have passed since the work started
