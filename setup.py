@@ -16,9 +16,10 @@ setup(
     description='Small CLI time logger',
 
     author='Justas Trimailovas',
-    author_email='j.trimailvoas@gmail.com',
+    author_email='j.trimailovas@gmail.com',
 
     url='https://github.com/trimailov/timeflow',
+    license='MIT',
     keywords=['timelogger', 'logging', 'timetracker', 'tracker'],
 
     long_description=read('README.rst'),
