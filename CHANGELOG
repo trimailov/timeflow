@@ -5,3 +5,4 @@
      now there is 1 file for argument parser and 1 file for time logging logic
 -- use pytest
 -- show how much time have passed since the work started
+-- `stats --this-week` option, to show current week time stats
