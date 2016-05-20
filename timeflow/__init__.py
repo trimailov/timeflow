@@ -162,6 +162,15 @@ def get_month_range(arg):
     return date_from, date_to
 
 
+def get_this_month():
+    now = dt.datetime.now()
+
+    date_from = now.replace(day=1).strftime(DATE_FORMAT)
+    date_to = now.strftime(DATE_FORMAT)
+
+    return date_from, date_to
+
+
 def get_last_month():
     current_month = dt.datetime.now().replace(day=1)
     last_month = current_month - dt.timedelta(days=1)
