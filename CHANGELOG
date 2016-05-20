@@ -1,3 +1,8 @@
+[0.2.1]
+
+-- Fix typo in log file name
+-- Add `stats --this-month` option
+
 [0.2]
 
 -- refactored into more sane file configuration
