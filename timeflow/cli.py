@@ -12,13 +12,18 @@ def log(args):
     timeflow.write_to_log_file(args.message)
 
 
+def _call_editor(editor, filename):
+    editor = editor.split()
+    subprocess.call(editor + [timeflow.LOG_FILE])
+
+
 def edit(args):
     if args.editor:
-        subprocess.call([args.editor, timeflow.LOG_FILE])
+        _call_editor(args.editor, timeflow.LOG_FILE)
     else:
         subprocess.call(['echo', 'Trying to open $EDITOR'])
         if os.environ.get('EDITOR'):
-            subprocess.call([os.environ.get('EDITOR'), timeflow.LOG_FILE])
+            _call_editor(os.environ.get('EDITOR'), timeflow.LOG_FILE)
         else:
             subprocess.call([
                 "echo",
