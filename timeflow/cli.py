@@ -46,13 +46,13 @@ def stats(args):
     elif args.this_week:
         date_from, date_to = timeflow.get_this_week()
     elif args.last_week:
-        date_from,  date_to = timeflow.get_last_week()
+        date_from, date_to = timeflow.get_last_week()
     elif args.month:
-        date_from,  date_to = timeflow.get_month_range(args.month)
+        date_from, date_to = timeflow.get_month_range(args.month)
     elif args.this_month:
         date_from, date_to = timeflow.get_this_month()
     elif args.last_month:
-        date_from,  date_to = timeflow.get_last_month()
+        date_from, date_to = timeflow.get_last_month()
     elif args._from and not args.to:
         date_from = args._from
         date_to = dt.datetime.now().strftime(timeflow.DATE_FORMAT)
@@ -83,13 +83,22 @@ def create_parser():
     subparser = parser.add_subparsers()
 
     # `log` command
-    log_parser = subparser.add_parser("log")
-    log_parser.add_argument("message")
+    log_parser = subparser.add_parser(
+        "log",
+        help="Log your time and explanation for it",
+    )
+    log_parser.add_argument(
+        "message",
+        help="The message which explains your spent time",
+    )
     log_parser.set_defaults(func=log)
 
     # `edit` command
-    edit_parser = subparser.add_parser("edit")
-    edit_parser.add_argument("-e", "--editor", help="Explicitly set editor")
+    edit_parser = subparser.add_parser(
+        "edit",
+        help="Open editor to fix/edit the time log",
+    )
+    edit_parser.add_argument("-e", "--editor", help="Use some editor")
     edit_parser.set_defaults(func=edit)
 
     # `stats` command
