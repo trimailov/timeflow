@@ -64,17 +64,17 @@ def stats(args):
         date_from = date_to = dt.datetime.now().strftime(timeflow.DATE_FORMAT)
         today = True
 
-    if args.report:
+    if args.report or args.report_as_gtimelog:
         work_report, slack_report = timeflow.calculate_report(
             timeflow.read_log_file_lines(),
             date_from,
             date_to
         )
-        timeflow.print_report(work_report, slack_report)
+        if args.report:
+            timeflow.print_report(work_report, slack_report)
+        elif args.report_as_gtimelog:
+            print(timeflow.create_report_as_gtimelog(work_report))
 
-    work_time, slack_time, today_work_time = timeflow.calculate_stats(
-        timeflow.read_log_file_lines(), date_from, date_to, today=today
-    )
     timeflow.print_stats(work_time, slack_time, today_work_time)
 
 
@@ -161,6 +161,11 @@ def create_parser():
         "-r", "--report",
         action="store_true",
         help="Show stats in report form"
+    )
+    stats_parser.add_argument(
+        "--report-as-gtimelog",
+        action="store_true",
+        help="Show stats in gtimelog report form"
     )
     stats_parser.set_defaults(func=stats)
 
