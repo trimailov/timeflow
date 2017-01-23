@@ -344,12 +344,12 @@ def calculate_stats(lines, date_from, date_to, today=False):
 
     data = parse_lines()
 
-    for i, line in enumerate(data[line_begins:line_ends+1]):
+    for i, line in enumerate(data[line_begins:line_ends + 1]):
         # if we got to the last line - stop
-        if line_begins+i+1 > line_ends:
+        if line_begins + i + 1 > line_ends:
             break
 
-        next_line = data[line_begins+i+1]
+        next_line = data[line_begins + i + 1]
 
         line_date = line.date
         next_line_date = next_line.date
@@ -393,15 +393,16 @@ def calculate_report(lines, date_from, date_to):
 
     data = parse_lines()
 
-    for i, line in enumerate(data[line_begins:line_ends+1]):
+    for i, line in enumerate(data[line_begins:line_ends + 1]):
         # if we got to the last line - stop
-        if line_begins+i+1 > line_ends:
+        if line_begins + i + 1 > line_ends:
             break
 
-        next_line = data[line_begins+i+1]
+        next_line = data[line_begins + i + 1]
 
         line_date = line.date
         next_line_date = next_line.date
+
         # if it's day switch, skip this cycle
         if line_date != next_line_date:
             continue
