@@ -90,6 +90,17 @@ def get_time(seconds):
     return hours, minutes
 
 
+def format_duration(seconds):
+    "Formats seconds into hour and minute string"
+    h, m = get_time(seconds)
+    if h and m:
+        return '%d hour%s %d min' % (h, h != 1 and "s" or "", m)
+    elif h:
+        return '%d hour%s' % (h, h != 1 and "s" or "")
+    else:
+        return '%d min' % m
+
+
 def get_this_week():
     now = dt.datetime.now()
 
@@ -227,6 +238,33 @@ def create_report(report_dict):
         )
         reports.append(report)
     return '\n'.join(reports)
+
+
+def create_report_as_gtimelog(report_dict):
+    output = ""
+    project_totals_output = ""
+    output += "{}{}\n".format(" " * 64, "time")
+
+    report_dict = OrderedDict(sorted(report_dict.items()))
+    total_seconds = 0
+    for project in report_dict:
+        total_project_seconds = 0
+        project_report = report_dict[project]
+        for log in project_report:
+            entry = "{}: {}".format(project, log)
+            seconds = project_report[log]
+            time_string = format_duration(seconds)
+            output += "{:62s}  {}\n".format(entry, time_string)
+            total_project_seconds += seconds
+        project_totals_output += "{:62s}  {}\n".format(project, format_duration(total_project_seconds))
+        total_seconds += total_project_seconds
+
+    output += "\n"
+    output += "Total work done this month: {}\n\n".format(format_duration(total_seconds))
+    output += "By category:\n\n"
+    output += project_totals_output
+
+    return output
 
 
 def print_report(work_report_dict, slack_report_dict):
