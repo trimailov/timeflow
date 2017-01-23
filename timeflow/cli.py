@@ -75,7 +75,12 @@ def stats(args):
         elif args.report_as_gtimelog:
             print(timeflow.create_report_as_gtimelog(work_report))
 
-    timeflow.print_stats(work_time, slack_time, today_work_time)
+    # do not print current working time if it's a report
+    if not any((args.report, args.report_as_gtimelog)):
+        work_time, slack_time, today_work_time = timeflow.calculate_stats(
+            timeflow.read_log_file_lines(), date_from, date_to, today=today
+        )
+        timeflow.print_stats(work_time, slack_time, today_work_time)
 
 
 def create_parser():
