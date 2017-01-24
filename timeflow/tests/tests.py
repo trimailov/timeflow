@@ -3,7 +3,7 @@ import os
 
 import pytest
 
-import timeflow
+import timeflow.utils
 from timeflow import cli
 
 FAKE_TIME = datetime.datetime(2015, 1, 1, 23, 59, 59)
@@ -26,7 +26,7 @@ def test_patch_datetime(patch_datetime_now):
 
 def test_log(patch_datetime_now, tmpdir, capsys):
     tmp_path = tmpdir.join("test_log.txt").strpath
-    timeflow.LOG_FILE = tmp_path
+    timeflow.utils.LOG_FILE = tmp_path
 
     # run log command
     parser = cli.create_parser()
@@ -43,7 +43,7 @@ def test_edit(patch_datetime_now, tmpdir, capsys):
     test_dir = os.path.dirname(os.path.realpath(__file__))
 
     # overwrite log file setting, to define file to be used in tests
-    timeflow.LOG_FILE = test_dir + '/fake_log.txt'
+    timeflow.stats.LOG_FILE = test_dir + '/fake_log.txt'
 
     # run edit command
     parser = cli.create_parser()
@@ -55,7 +55,7 @@ def test_stats_now(patch_datetime_now, capsys):
     test_dir = os.path.dirname(os.path.realpath(__file__))
 
     # overwrite log file setting, to define file to be used in tests
-    timeflow.LOG_FILE = test_dir + '/fake_log.txt'
+    timeflow.stats.LOG_FILE = test_dir + '/fake_log.txt'
 
     # run stats command
     parser = cli.create_parser()
@@ -75,7 +75,7 @@ def test_stats_yesterday(patch_datetime_now, capsys):
     test_dir = os.path.dirname(os.path.realpath(__file__))
 
     # overwrite log file setting, to define file to be used in tests
-    timeflow.LOG_FILE = test_dir + '/fake_log.txt'
+    timeflow.stats.LOG_FILE = test_dir + '/fake_log.txt'
 
     # run stats command
     parser = cli.create_parser()
@@ -93,7 +93,7 @@ def test_stats_day(patch_datetime_now, capsys):
     test_dir = os.path.dirname(os.path.realpath(__file__))
 
     # overwrite log file setting, to define file to be used in tests
-    timeflow.LOG_FILE = test_dir + '/fake_log.txt'
+    timeflow.stats.LOG_FILE = test_dir + '/fake_log.txt'
 
     # run stats command
     parser = cli.create_parser()
@@ -111,7 +111,7 @@ def test_stats_this_week(patch_datetime_now, capsys):
     test_dir = os.path.dirname(os.path.realpath(__file__))
 
     # overwrite log file setting, to define file to be used in tests
-    timeflow.LOG_FILE = test_dir + '/fake_log.txt'
+    timeflow.stats.LOG_FILE = test_dir + '/fake_log.txt'
 
     # run stats command
     parser = cli.create_parser()
@@ -129,7 +129,7 @@ def test_stats_last_week(patch_datetime_now, capsys):
     test_dir = os.path.dirname(os.path.realpath(__file__))
 
     # overwrite log file setting, to define file to be used in tests
-    timeflow.LOG_FILE = test_dir + '/fake_log.txt'
+    timeflow.stats.LOG_FILE = test_dir + '/fake_log.txt'
 
     # run stats command
     parser = cli.create_parser()
@@ -147,7 +147,7 @@ def test_stats_week(patch_datetime_now, capsys):
     test_dir = os.path.dirname(os.path.realpath(__file__))
 
     # overwrite log file setting, to define file to be used in tests
-    timeflow.LOG_FILE = test_dir + '/fake_log.txt'
+    timeflow.stats.LOG_FILE = test_dir + '/fake_log.txt'
 
     # run stats command
     parser = cli.create_parser()
@@ -165,7 +165,7 @@ def test_stats_last_month(patch_datetime_now, capsys):
     test_dir = os.path.dirname(os.path.realpath(__file__))
 
     # overwrite log file setting, to define file to be used in tests
-    timeflow.LOG_FILE = test_dir + '/fake_log.txt'
+    timeflow.stats.LOG_FILE = test_dir + '/fake_log.txt'
 
     # run stats command
     parser = cli.create_parser()
@@ -183,7 +183,7 @@ def test_stats_this_month(patch_datetime_now, capsys):
     test_dir = os.path.dirname(os.path.realpath(__file__))
 
     # overwrite log file setting, to define file to be used in tests
-    timeflow.LOG_FILE = test_dir + '/fake_log.txt'
+    timeflow.stats.LOG_FILE = test_dir + '/fake_log.txt'
 
     # run stats command
     parser = cli.create_parser()
@@ -201,7 +201,7 @@ def test_stats_month(patch_datetime_now, capsys):
     test_dir = os.path.dirname(os.path.realpath(__file__))
 
     # overwrite log file setting, to define file to be used in tests
-    timeflow.LOG_FILE = test_dir + '/fake_log.txt'
+    timeflow.stats.LOG_FILE = test_dir + '/fake_log.txt'
 
     # run stats command
     parser = cli.create_parser()
@@ -219,7 +219,7 @@ def test_stats_from(patch_datetime_now, capsys):
     test_dir = os.path.dirname(os.path.realpath(__file__))
 
     # overwrite log file setting, to define file to be used in tests
-    timeflow.LOG_FILE = test_dir + '/fake_log.txt'
+    timeflow.stats.LOG_FILE = test_dir + '/fake_log.txt'
 
     # run stats command
     parser = cli.create_parser()
@@ -237,7 +237,7 @@ def test_stats_from_to(patch_datetime_now, capsys):
     test_dir = os.path.dirname(os.path.realpath(__file__))
 
     # overwrite log file setting, to define file to be used in tests
-    timeflow.LOG_FILE = test_dir + '/fake_log.txt'
+    timeflow.stats.LOG_FILE = test_dir + '/fake_log.txt'
 
     # run stats command
     parser = cli.create_parser()
@@ -256,7 +256,7 @@ def test_stats_now_report(patch_datetime_now, capsys):
     test_dir = os.path.dirname(os.path.realpath(__file__))
 
     # overwrite log file setting, to define file to be used in tests
-    timeflow.LOG_FILE = test_dir + '/fake_log.txt'
+    timeflow.stats.LOG_FILE = test_dir + '/fake_log.txt'
 
     # run stats command
     parser = cli.create_parser()
@@ -291,7 +291,7 @@ def test_stats_now_report_as_gtimelog(patch_datetime_now, capsys):
     test_dir = os.path.dirname(os.path.realpath(__file__))
 
     # overwrite log file setting, to define file to be used in tests
-    timeflow.LOG_FILE = test_dir + '/fake_log.txt'
+    timeflow.stats.LOG_FILE = test_dir + '/fake_log.txt'
 
     # run stats command
     parser = cli.create_parser()

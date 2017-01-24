@@ -5,25 +5,26 @@ import subprocess
 
 from argparse import ArgumentParser
 
-import timeflow
+from timeflow import stats as statistics
+from timeflow import utils
 
 
 def log(args):
-    timeflow.write_to_log_file(args.message)
+    utils.write_to_log_file(args.message)
 
 
 def _call_editor(editor, filename):
     editor = editor.split()
-    subprocess.call(editor + [timeflow.LOG_FILE])
+    subprocess.call(editor + [utils.LOG_FILE])
 
 
 def edit(args):
     if args.editor:
-        _call_editor(args.editor, timeflow.LOG_FILE)
+        _call_editor(args.editor, utils.LOG_FILE)
     else:
         subprocess.call(['echo', 'Trying to open $EDITOR'])
         if os.environ.get('EDITOR'):
-            _call_editor(os.environ.get('EDITOR'), timeflow.LOG_FILE)
+            _call_editor(os.environ.get('EDITOR'), utils.LOG_FILE)
         else:
             subprocess.call([
                 "echo",
@@ -38,49 +39,49 @@ def stats(args):
     date_from = date_to = None
     if args.yesterday:
         yesterday_obj = dt.datetime.now() - dt.timedelta(days=1)
-        date_from = date_to = yesterday_obj.strftime(timeflow.DATE_FORMAT)
+        date_from = date_to = yesterday_obj.strftime(utils.DATE_FORMAT)
     elif args.day:
         date_from = date_to = args.day
     elif args.week:
-        date_from, date_to = timeflow.get_week_range(args.week)
+        date_from, date_to = utils.get_week_range(args.week)
     elif args.this_week:
-        date_from, date_to = timeflow.get_this_week()
+        date_from, date_to = utils.get_this_week()
     elif args.last_week:
-        date_from, date_to = timeflow.get_last_week()
+        date_from, date_to = utils.get_last_week()
     elif args.month:
-        date_from, date_to = timeflow.get_month_range(args.month)
+        date_from, date_to = utils.get_month_range(args.month)
     elif args.this_month:
-        date_from, date_to = timeflow.get_this_month()
+        date_from, date_to = utils.get_this_month()
     elif args.last_month:
-        date_from, date_to = timeflow.get_last_month()
+        date_from, date_to = utils.get_last_month()
     elif args._from and not args.to:
         date_from = args._from
-        date_to = dt.datetime.now().strftime(timeflow.DATE_FORMAT)
+        date_to = dt.datetime.now().strftime(utils.DATE_FORMAT)
     elif args._from and args.to:
         date_from = args._from
         date_to = args.to
     else:
         # default action is to show today's  stats
-        date_from = date_to = dt.datetime.now().strftime(timeflow.DATE_FORMAT)
+        date_from = date_to = dt.datetime.now().strftime(utils.DATE_FORMAT)
         today = True
 
     if args.report or args.report_as_gtimelog:
-        work_report, slack_report = timeflow.calculate_report(
-            timeflow.read_log_file_lines(),
+        work_report, slack_report = statistics.calculate_report(
+            statistics.read_log_file_lines(),
             date_from,
             date_to
         )
         if args.report:
-            timeflow.print_report(work_report, slack_report)
+            statistics.print_report(work_report, slack_report)
         elif args.report_as_gtimelog:
-            print(timeflow.create_report_as_gtimelog(work_report))
+            print(statistics.create_report_as_gtimelog(work_report))
 
     # do not print current working time if it's a report
     if not any((args.report, args.report_as_gtimelog)):
-        work_time, slack_time, today_work_time = timeflow.calculate_stats(
-            timeflow.read_log_file_lines(), date_from, date_to, today=today
+        work_time, slack_time, today_work_time = statistics.calculate_stats(
+            statistics.read_log_file_lines(), date_from, date_to, today=today
         )
-        timeflow.print_stats(work_time, slack_time, today_work_time)
+        statistics.print_stats(work_time, slack_time, today_work_time)
 
 
 def create_parser():
