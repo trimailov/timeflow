@@ -72,7 +72,7 @@ def stats(args):
             date_to
         )
         if args.report:
-            statistics.print_report(work_report, slack_report)
+            print(statistics.create_full_report(work_report, slack_report))
         elif args.report_as_gtimelog:
             print(statistics.create_report_as_gtimelog(work_report))
 

@@ -7,7 +7,8 @@ from collections import OrderedDict
 from timeflow.utils import date_begins
 from timeflow.utils import date_ends
 from timeflow.utils import get_time
-from timeflow.utils import format_duration
+from timeflow.utils import format_duration_short
+from timeflow.utils import format_duration_long
 from timeflow.utils import LOG_FILE
 from timeflow.utils import DATETIME_FORMAT
 
@@ -31,36 +32,48 @@ def print_stats(work_time, slack_time, today_work_time):
 
 
 def create_report(report_dict):
-    reports = []
+    output = ""
+
     report_dict = OrderedDict(sorted(report_dict.items()))
     for project in report_dict:
-        report = "{}:\n".format(project)
+        project_output = "{}:\n".format(project)
         project_report = report_dict[project]
         total_seconds = 0
         for log in project_report:
-            total_seconds += project_report[log]
-            hr, mn = get_time(project_report[log])
+            log_seconds = project_report[log]
+            total_seconds += log_seconds
 
-            # do not leave trailing space if there is no log
-            if log:
-                report += "    {hours}h {minutes:02}min: {log}\n".format(
-                    hours=hr,
-                    minutes=mn,
-                    log=log
-                )
-            else:
-                report += "    {hours}h {minutes:02}min\n".format(
-                    hours=hr,
-                    minutes=mn
-                )
+            # if log is empty - just state the project name
+            if not log:
+                log = project
 
-        hr, mn = get_time(total_seconds)
-        report += "    Total: {hours}h {minutes:02}min\n".format(
-            hours=hr,
-            minutes=mn
+            project_output += "    {time}: {log}\n".format(
+                time=format_duration_long(log_seconds),
+                log=log
+            )
+        project_output += "    Total: {time}\n".format(
+            time=format_duration_long(total_seconds),
         )
-        reports.append(report)
-    return '\n'.join(reports)
+        output += project_output
+        output += '\n'
+
+    # remove trailing newlines as they may add up in the pipeline
+    return output.strip('\n')
+
+
+def create_full_report(work_report_dict, slack_report_dict):
+    """
+    Returns report for both - work and slack
+    """
+    output = ""
+    work_report = create_report(work_report_dict)
+    slack_report = create_report(slack_report_dict)
+    output += "{:-^67s}\n".format(" WORK ")
+    output += work_report
+    output += "\n"  # I want empty line between work and slack report
+    output += "{:-^67s}\n".format(" SLACK ")
+    output += slack_report
+    return output
 
 
 def create_report_as_gtimelog(report_dict):
@@ -76,27 +89,18 @@ def create_report_as_gtimelog(report_dict):
         for log in project_report:
             entry = "{}: {}".format(project, log)
             seconds = project_report[log]
-            time_string = format_duration(seconds)
+            time_string = format_duration_short(seconds)
             output += "{:62s}  {}\n".format(entry, time_string)
             total_project_seconds += seconds
-        project_totals_output += "{:62s}  {}\n".format(project, format_duration(total_project_seconds))
+        project_totals_output += "{:62s}  {}\n".format(project, format_duration_short(total_project_seconds))
         total_seconds += total_project_seconds
 
     output += "\n"
-    output += "Total work done this month: {}\n\n".format(format_duration(total_seconds))
+    output += "Total work done this month: {}\n\n".format(format_duration_short(total_seconds))
     output += "By category:\n\n"
     output += project_totals_output
 
     return output
-
-
-def print_report(work_report_dict, slack_report_dict):
-    work_report = create_report(work_report_dict)
-    slack_report = create_report(slack_report_dict)
-    print('-' * 30, 'WORK', '-' * 31)
-    print(work_report)
-    print('-' * 30, 'SLACK', '-' * 30)
-    print(slack_report)
 
 
 class Line():

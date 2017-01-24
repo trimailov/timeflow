@@ -93,8 +93,12 @@ def get_time(seconds):
     return hours, minutes
 
 
-def format_duration(seconds):
-    "Formats seconds into hour and minute string"
+def format_duration_short(seconds):
+    """
+    Formats seconds into hour and minute string
+
+    Does not return hour or minute substring if the value is zero
+    """
     h, m = get_time(seconds)
     if h and m:
         return '%d hour%s %d min' % (h, h != 1 and "s" or "", m)
@@ -102,6 +106,16 @@ def format_duration(seconds):
         return '%d hour%s' % (h, h != 1 and "s" or "")
     else:
         return '%d min' % m
+
+
+def format_duration_long(seconds):
+    """
+    Formats seconds into hour and minute string
+
+    Always returns full string, even if hours or minutes may be zero
+    """
+    h, m = get_time(seconds)
+    return '%d hour%s %d min' % (h, h != 1 and "s" or "", m)
 
 
 def get_this_week():
