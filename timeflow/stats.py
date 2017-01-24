@@ -13,22 +13,16 @@ from timeflow.utils import LOG_FILE
 from timeflow.utils import DATETIME_FORMAT
 
 
-def print_stats(work_time, slack_time, today_work_time):
-    work_hours, work_minutes = get_time(sum(work_time))
-    slack_hours, slack_minutes = get_time(sum(slack_time))
-
-    work_string = 'Work: {:02}h {:02}min'.format(work_hours, work_minutes)
-    slack_string = 'Slack: {:02}h {:02}min'.format(slack_hours, slack_minutes)
-
-    print(work_string)
-    print(slack_string)
+def get_total_stats_times(work_time, slack_time, today_work_time):
+    output = 'Work: {}\n'.format(format_duration_short(sum(work_time)))
+    output += 'Slack: {}'.format(format_duration_short(sum(slack_time)))
 
     if today_work_time:
         today_hours, today_minutes = get_time(today_work_time)
-        work_string = '\nToday working for: {:02}h {:02}min'.format(
-            today_hours, today_minutes
+        output += '\n\nToday working for: {}'.format(
+            format_duration_short(today_work_time)
         )
-        print(work_string)
+    return output
 
 
 def create_report(report_dict):

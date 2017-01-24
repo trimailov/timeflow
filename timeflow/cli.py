@@ -81,7 +81,7 @@ def stats(args):
         work_time, slack_time, today_work_time = statistics.calculate_stats(
             statistics.read_log_file_lines(), date_from, date_to, today=today
         )
-        statistics.print_stats(work_time, slack_time, today_work_time)
+        print(statistics.get_total_stats_times(work_time, slack_time, today_work_time))
 
 
 def create_parser():
