@@ -64,11 +64,11 @@ def test_stats_now(patch_datetime_now, capsys):
 
     # extract STDOUT, as stats command prints to it
     out, err = capsys.readouterr()
-    result = ("Work: 02h 50min\n"
-              "Slack: 01h 10min\n"
+    result = ("Work: 2 hours 50 min\n"
+              "Slack: 1 hour 10 min\n"
               "\n"
-              "Today working for: 15h 59min\n")
-    assert result == out
+              "Today working for: 15 hours 59 min\n")
+    assert out == result
 
 
 def test_stats_yesterday(patch_datetime_now, capsys):
@@ -84,9 +84,9 @@ def test_stats_yesterday(patch_datetime_now, capsys):
 
     # extract STDOUT, as stats command prints to it
     out, err = capsys.readouterr()
-    result = ("Work: 02h 50min\n"
-              "Slack: 01h 10min\n")
-    assert result == out
+    result = ("Work: 2 hours 50 min\n"
+              "Slack: 1 hour 10 min\n")
+    assert out == result
 
 
 def test_stats_day(patch_datetime_now, capsys):
@@ -102,9 +102,9 @@ def test_stats_day(patch_datetime_now, capsys):
 
     # extract STDOUT, as stats command prints to it
     out, err = capsys.readouterr()
-    result = ("Work: 02h 50min\n"
-              "Slack: 01h 10min\n")
-    assert result == out
+    result = ("Work: 2 hours 50 min\n"
+              "Slack: 1 hour 10 min\n")
+    assert out == result
 
 
 def test_stats_this_week(patch_datetime_now, capsys):
@@ -120,9 +120,9 @@ def test_stats_this_week(patch_datetime_now, capsys):
 
     # extract STDOUT, as stats command prints to it
     out, err = capsys.readouterr()
-    result = ("Work: 08h 50min\n"
-              "Slack: 03h 50min\n")
-    assert result == out
+    result = ("Work: 8 hours 50 min\n"
+              "Slack: 3 hours 50 min\n")
+    assert out == result
 
 
 def test_stats_last_week(patch_datetime_now, capsys):
@@ -138,9 +138,9 @@ def test_stats_last_week(patch_datetime_now, capsys):
 
     # extract STDOUT, as stats command prints to it
     out, err = capsys.readouterr()
-    result = ("Work: 02h 50min\n"
-              "Slack: 01h 10min\n")
-    assert result == out
+    result = ("Work: 2 hours 50 min\n"
+              "Slack: 1 hour 10 min\n")
+    assert out == result
 
 
 def test_stats_week(patch_datetime_now, capsys):
@@ -156,9 +156,9 @@ def test_stats_week(patch_datetime_now, capsys):
 
     # extract STDOUT, as stats command prints to it
     out, err = capsys.readouterr()
-    result = ("Work: 08h 50min\n"
-              "Slack: 03h 50min\n")
-    assert result == out
+    result = ("Work: 8 hours 50 min\n"
+              "Slack: 3 hours 50 min\n")
+    assert out == result
 
 
 def test_stats_last_month(patch_datetime_now, capsys):
@@ -174,9 +174,9 @@ def test_stats_last_month(patch_datetime_now, capsys):
 
     # extract STDOUT, as stats command prints to it
     out, err = capsys.readouterr()
-    result = ("Work: 05h 40min\n"
-              "Slack: 02h 20min\n")
-    assert result == out
+    result = ("Work: 5 hours 40 min\n"
+              "Slack: 2 hours 20 min\n")
+    assert out == result
 
 
 def test_stats_this_month(patch_datetime_now, capsys):
@@ -192,9 +192,9 @@ def test_stats_this_month(patch_datetime_now, capsys):
 
     # extract STDOUT, as stats command prints to it
     out, err = capsys.readouterr()
-    result = ("Work: 02h 50min\n"
-              "Slack: 01h 10min\n")
-    assert result == out
+    result = ("Work: 2 hours 50 min\n"
+              "Slack: 1 hour 10 min\n")
+    assert out == result
 
 
 def test_stats_month(patch_datetime_now, capsys):
@@ -210,9 +210,9 @@ def test_stats_month(patch_datetime_now, capsys):
 
     # extract STDOUT, as stats command prints to it
     out, err = capsys.readouterr()
-    result = ("Work: 06h 00min\n"
-              "Slack: 02h 40min\n")
-    assert result == out
+    result = ("Work: 6 hours\n"
+              "Slack: 2 hours 40 min\n")
+    assert out == result
 
 
 def test_stats_from(patch_datetime_now, capsys):
@@ -228,9 +228,9 @@ def test_stats_from(patch_datetime_now, capsys):
 
     # extract STDOUT, as stats command prints to it
     out, err = capsys.readouterr()
-    result = ("Work: 05h 40min\n"
-              "Slack: 02h 20min\n")
-    assert result == out
+    result = ("Work: 5 hours 40 min\n"
+              "Slack: 2 hours 20 min\n")
+    assert out == result
 
 
 def test_stats_from_to(patch_datetime_now, capsys):
@@ -247,9 +247,9 @@ def test_stats_from_to(patch_datetime_now, capsys):
 
     # extract STDOUT, as stats command prints to it
     out, err = capsys.readouterr()
-    result = ("Work: 08h 30min\n"
-              "Slack: 03h 30min\n")
-    assert result == out
+    result = ("Work: 8 hours 30 min\n"
+              "Slack: 3 hours 30 min\n")
+    assert out == result
 
 
 def test_stats_now_report(patch_datetime_now, capsys):
@@ -283,7 +283,7 @@ def test_stats_now_report(patch_datetime_now, capsys):
         "    0 hours 25 min: watch YouTube\n"
         "    Total: 0 hours 25 min\n"
     )
-    assert result == out
+    assert out == result
 
 
 def test_stats_now_report_as_gtimelog(patch_datetime_now, capsys):
@@ -314,4 +314,4 @@ def test_stats_now_report_as_gtimelog(patch_datetime_now, capsys):
         "Django                                                          1 hour 35 min\n"
         "Timeflow                                                        1 hour 15 min\n\n"
     )
-    assert result == out
+    assert out == result
