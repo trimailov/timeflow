@@ -282,11 +282,37 @@ def test_stats_now_report(patch_datetime_now, capsys):
         "\n"
         "Slack:\n"
         "    0h 25min: watch YouTube\n"
-        "    Total: 0h 25min\n"
+        "    Total: 0h 25min\n\n"
+    )
+    assert result == out
+
+
+def test_stats_now_report_as_gtimelog(patch_datetime_now, capsys):
+    test_dir = os.path.dirname(os.path.realpath(__file__))
+
+    # overwrite log file setting, to define file to be used in tests
+    timeflow.LOG_FILE = test_dir + '/fake_log.txt'
+
+    # run stats command
+    parser = cli.create_parser()
+    args = parser.parse_args(['stats', '--report-as-gtimelog'])
+    args.func(args)
+
+    # extract STDOUT, as stats command prints to it
+    out, err = capsys.readouterr()
+    result = (
+        "                                                                time\n"
+        "Django: read documentation                                      1 hour 35 min\n"
+        "Timeflow: start project                                         1 hour 15 min"
         "\n"
-        "Work: 02h 50min\n"
-        "Slack: 01h 10min\n"
         "\n"
-        "Today working for: 15h 59min\n"
+        "Total work done this month: 2 hours 50 min"
+        "\n"
+        "\n"
+        "By category:"
+        "\n"
+        "\n"
+        "Django                                                          1 hour 35 min\n"
+        "Timeflow                                                        1 hour 15 min\n\n"
     )
     assert result == out
