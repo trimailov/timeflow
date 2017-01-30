@@ -37,6 +37,7 @@ def edit(args):
 def stats(args):
     today = False
     date_from = date_to = None
+    literal_time_range = ''
     if args.yesterday:
         yesterday_obj = dt.datetime.now() - dt.timedelta(days=1)
         date_from = date_to = yesterday_obj.strftime(utils.DATE_FORMAT)
@@ -44,16 +45,22 @@ def stats(args):
         date_from = date_to = args.day
     elif args.week:
         date_from, date_to = utils.get_week_range(args.week)
+        literal_time_range = "this week"
     elif args.this_week:
         date_from, date_to = utils.get_this_week()
+        literal_time_range = "this week"
     elif args.last_week:
         date_from, date_to = utils.get_last_week()
+        literal_time_range = "this week"
     elif args.month:
         date_from, date_to = utils.get_month_range(args.month)
+        literal_time_range = "this month"
     elif args.this_month:
         date_from, date_to = utils.get_this_month()
+        literal_time_range = "this month"
     elif args.last_month:
         date_from, date_to = utils.get_last_month()
+        literal_time_range = "this month"
     elif args._from and not args.to:
         date_from = args._from
         date_to = dt.datetime.now().strftime(utils.DATE_FORMAT)
@@ -74,7 +81,11 @@ def stats(args):
         if args.report:
             print(statistics.create_full_report(work_report, slack_report))
         elif args.report_as_gtimelog:
-            print(statistics.create_report_as_gtimelog(work_report))
+            output = statistics.create_report_as_gtimelog(
+                work_report,
+                literal_time_range=literal_time_range,
+            )
+            print(output)
 
     # do not print current working time if it's a report
     if not any((args.report, args.report_as_gtimelog)):

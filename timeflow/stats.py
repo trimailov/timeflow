@@ -77,7 +77,7 @@ def create_full_report(work_report_dict, slack_report_dict):
     return output
 
 
-def create_report_as_gtimelog(report_dict):
+def create_report_as_gtimelog(report_dict, literal_time_range=''):
     """
     Returns string output for report which is generated as in gtimelog
     """
@@ -100,7 +100,11 @@ def create_report_as_gtimelog(report_dict):
         total_seconds += total_project_seconds
 
     output += "\n"
-    output += "Total work done this month: {}\n\n".format(format_duration_short(total_seconds))
+    output += "Total work done{}{}: {}\n\n".format(
+        ' ' if literal_time_range else '',  # add space if time range exists
+        literal_time_range,
+        format_duration_short(total_seconds)
+    )
     output += "By category:\n\n"
     output += project_totals_output
 
