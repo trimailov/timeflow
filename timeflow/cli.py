@@ -67,7 +67,7 @@ def stats(args):
 
     if args.report or args.report_as_gtimelog:
         work_report, slack_report = statistics.calculate_report(
-            statistics.read_log_file_lines(),
+            utils.read_log_file_lines(),
             date_from,
             date_to
         )
@@ -79,7 +79,7 @@ def stats(args):
     # do not print current working time if it's a report
     if not any((args.report, args.report_as_gtimelog)):
         work_time, slack_time, today_work_time = statistics.calculate_stats(
-            statistics.read_log_file_lines(), date_from, date_to, today=today
+            utils.read_log_file_lines(), date_from, date_to, today=today
         )
         print(statistics.get_total_stats_times(work_time, slack_time, today_work_time))
 
