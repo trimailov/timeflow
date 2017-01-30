@@ -79,13 +79,17 @@ def stats(args):
             date_to
         )
         if args.report:
-            print(statistics.create_full_report(work_report, slack_report))
+            output = statistics.create_full_report(work_report, slack_report)
         elif args.report_as_gtimelog:
             output = statistics.create_report_as_gtimelog(
                 work_report,
                 literal_time_range=literal_time_range,
             )
-            print(output)
+
+        print(output)
+
+        if args.email:
+            statistics.email_report(date_from, date_to, output)
 
     # do not print current working time if it's a report
     if not any((args.report, args.report_as_gtimelog)):
@@ -183,6 +187,11 @@ def create_parser():
         "--report-as-gtimelog",
         action="store_true",
         help="Show stats in gtimelog report form"
+    )
+    stats_parser.add_argument(
+        "--email",
+        action="store_true",
+        help="Send generated report to activity email"
     )
     stats_parser.set_defaults(func=stats)
 

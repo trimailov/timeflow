@@ -1,8 +1,10 @@
 import datetime as dt
+import smtplib
 
 from collections import defaultdict
 from collections import OrderedDict
 
+from timeflow.settings import Settings
 from timeflow.utils import DATETIME_FORMAT
 from timeflow.utils import calc_time_diff
 from timeflow.utils import date_begins
@@ -209,3 +211,29 @@ def calculate_report(lines, date_from, date_to):
                 work_dict[project][log] = time_diff
 
     return work_dict, slack_dict
+
+
+def email_report(date_from, date_to, report):
+    settings = Settings()
+    settings.load()
+
+    sender = settings.email_address
+    receivers = [settings.activity_email]
+    subject = "Test"
+
+    message = (
+        "From: {}\n"
+        "To: {}\n"
+        "Subject: {}\n\n"
+        "{}"
+    ).format(sender, ", ".join(receivers), subject, report)
+
+    try:
+        conn = smtplib.SMTP(settings.smtp_server, settings.smtp_port)
+        conn.ehlo()
+        conn.starttls()
+        conn.login(settings.email_user, settings.email_password)
+        conn.sendmail(sender, receivers, message)
+        print("Successfully sent email")
+    except smtplib.SMTPException:
+        print("Error: unable to send email")
