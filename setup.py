@@ -12,7 +12,7 @@ def read(fname):
 setup(
     name='timeflow',
     packages=['timeflow'],
-    version='0.2.3',
+    version='0.2.3a',
     description='Small CLI time logger',
 
     author='Justas Trimailovas',
