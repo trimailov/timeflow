@@ -79,9 +79,13 @@ Commands & options
 
     ``--week WEEK_NUMBER`` - shows arbitrary week's work and slack time.
 
+    ``--this-week`` - shows this week's work and slack time.
+
     ``--last-week`` - shows last week's work and slack time.
 
     ``--month MONTH_NUMBER`` - shows arbitrary month's work and slack time.
+
+    ``--this-month`` - shows this month's work and slack time.
 
     ``--last-month`` - shows last month's work and slack time.
 
@@ -90,3 +94,5 @@ Commands & options
     ``-t DATE, --to DATE`` - shows work and slack time, up to DATE. Must be used with ``--from`` option.
 
     ``--report`` - shows report for today, or some other time range if specified using available options.
+
+    ``--report-as-gtimelog`` - same as ``--report``, but the output is like in `gtimelog <https://github.com/gtimelog/gtimelog>`_
