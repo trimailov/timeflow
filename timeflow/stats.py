@@ -1,19 +1,23 @@
 import datetime as dt
-import re
 
 from collections import defaultdict
 from collections import OrderedDict
 
+from timeflow.utils import DATETIME_FORMAT
+from timeflow.utils import calc_time_diff
 from timeflow.utils import date_begins
 from timeflow.utils import date_ends
-from timeflow.utils import get_time
-from timeflow.utils import format_duration_short
 from timeflow.utils import format_duration_long
-from timeflow.utils import LOG_FILE
-from timeflow.utils import DATETIME_FORMAT
+from timeflow.utils import format_duration_short
+from timeflow.utils import get_time
+from timeflow.utils import parse_lines
+from timeflow.utils import strip_log
 
 
 def get_total_stats_times(work_time, slack_time, today_work_time):
+    """
+    Returns string output for totals times spent working and slacking
+    """
     output = 'Work: {}\n'.format(format_duration_short(sum(work_time)))
     output += 'Slack: {}'.format(format_duration_short(sum(slack_time)))
 
@@ -26,6 +30,9 @@ def get_total_stats_times(work_time, slack_time, today_work_time):
 
 
 def create_report(report_dict):
+    """
+    Returns string output for stats report
+    """
     output = ""
 
     report_dict = OrderedDict(sorted(report_dict.items()))
@@ -71,6 +78,9 @@ def create_full_report(work_report_dict, slack_report_dict):
 
 
 def create_report_as_gtimelog(report_dict):
+    """
+    Returns string output for report which is generated as in gtimelog
+    """
     output = ""
     project_totals_output = ""
     output += "{}{}\n".format(" " * 64, "time")
@@ -95,97 +105,6 @@ def create_report_as_gtimelog(report_dict):
     output += project_totals_output
 
     return output
-
-
-class Line():
-    def __init__(self, date, time, project, log, is_slack):
-        self.date = date
-        self.time = time
-        self.project = project
-        self.log = log
-        self.is_slack = is_slack
-
-
-def clean_line(time, project, log):
-    "Cleans line data from unnecessary chars"
-    # time has extra colon at the end, so we remove it
-    time = time[:-1]
-
-    # project and log can have new line char at the end, remove it
-    if project and project[-1] == '\n':
-        project = project[:-1]
-
-    if log and log[-1] == '\n':
-        log = log[:-1]
-
-    return time, project, log
-
-
-def parse_message(message):
-    "Parses message as log can be empty"
-    parsed_message = re.split(r': ', message, maxsplit=1)
-
-    # if parsed message has only project stated, then log is empty
-    if len(parsed_message) == 1:
-        if type(parsed_message) == list:
-            project = parsed_message[0]
-        else:
-            project = parsed_message
-        log = ''
-    else:
-        project, log = parsed_message
-
-    return project, log
-
-
-def find_slack(project, log):
-    if project.endswith("**") or log.endswith("**"):
-        return True
-    return False
-
-
-def strip_log(string):
-    "Strips string from slack marks and leading/trailing spaces"
-    if string.endswith("**"):
-        string = string[:-2]
-    return string.strip()
-
-
-def parse_line(line):
-    """Parses log line into logical units: time, project and message
-
-    Log line looks like this:
-    [date]_[time]:_[project]:_[log message]
-    """
-    # get date time and the rest of a message
-    date, time, message = re.split(r' ', line, maxsplit=2)
-
-    project, log = parse_message(message)
-    time, project, log = clean_line(time, project, log)
-    is_slack = find_slack(project, log)
-
-    return Line(date, time, project, log, is_slack)
-
-
-def parse_lines():
-    """Returns a list of objects representing log file"""
-    lines = read_log_file_lines()
-    data = []
-    for line in lines:
-        data.append(parse_line(line))
-    return data
-
-
-def calc_time_diff(line, next_line):
-    line_time = dt.datetime.strptime(
-        "{} {}".format(line.date, line.time),
-        DATETIME_FORMAT
-    )
-    next_line_time = dt.datetime.strptime(
-        "{} {}".format(next_line.date, next_line.time),
-        DATETIME_FORMAT
-    )
-    return (next_line_time - line_time).seconds
 
 
 def calculate_stats(lines, date_from, date_to, today=False):
@@ -286,8 +205,3 @@ def calculate_report(lines, date_from, date_to):
                 work_dict[project][log] = time_diff
 
     return work_dict, slack_dict
-
-
-def read_log_file_lines():
-    with open(LOG_FILE, 'r') as fp:
-        return [line for line in fp.readlines() if line != '\n']
