@@ -1,3 +1,8 @@
+[0.2.3]
+
+-- Add `--report-as-gtimelog` to `stats` command
+-- Separated `stats` command logic into `stats.py` and utilities into `utils.py`
+
 [0.2.2]
 
 -- Allow to have $EDITOR with arguments [#1]
