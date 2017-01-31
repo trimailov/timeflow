@@ -305,7 +305,7 @@ def test_stats_now_report_as_gtimelog(patch_datetime_now, capsys):
         "Timeflow: start project                                         1 hour 15 min"
         "\n"
         "\n"
-        "Total work done this month: 2 hours 50 min"
+        "Total work done: 2 hours 50 min"
         "\n"
         "\n"
         "By category:"
