@@ -1,4 +1,5 @@
 - Sending reports with email
 - `--version, -V` option
 - User settings
+- Set editor with from user settings
 - Better `--month`, `--week` value parsing and help
