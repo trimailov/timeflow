@@ -37,30 +37,39 @@ def edit(args):
 def stats(args):
     today = False
     date_from = date_to = None
+    email_time_range = None
     literal_time_range = ''
     if args.yesterday:
         yesterday_obj = dt.datetime.now() - dt.timedelta(days=1)
         date_from = date_to = yesterday_obj.strftime(utils.DATE_FORMAT)
+        email_time_range = "day"
     elif args.day:
         date_from = date_to = args.day
+        email_time_range = "day"
     elif args.week:
         date_from, date_to = utils.get_week_range(args.week)
         literal_time_range = "this week"
+        email_time_range = "week"
     elif args.this_week:
         date_from, date_to = utils.get_this_week()
         literal_time_range = "this week"
+        email_time_range = "week"
     elif args.last_week:
         date_from, date_to = utils.get_last_week()
         literal_time_range = "this week"
+        email_time_range = "week"
     elif args.month:
         date_from, date_to = utils.get_month_range(args.month)
         literal_time_range = "this month"
+        email_time_range = "month"
     elif args.this_month:
         date_from, date_to = utils.get_this_month()
         literal_time_range = "this month"
+        email_time_range = "month"
     elif args.last_month:
         date_from, date_to = utils.get_last_month()
         literal_time_range = "this month"
+        email_time_range = "month"
     elif args._from and not args.to:
         date_from = args._from
         date_to = dt.datetime.now().strftime(utils.DATE_FORMAT)
@@ -70,6 +79,7 @@ def stats(args):
     else:
         # default action is to show today's  stats
         date_from = date_to = dt.datetime.now().strftime(utils.DATE_FORMAT)
+        email_time_range = "day"
         today = True
 
     if args.report or args.report_as_gtimelog:
@@ -89,7 +99,8 @@ def stats(args):
         print(output)
 
         if args.email:
-            statistics.email_report(date_from, date_to, output)
+            statistics.email_report(date_from, date_to, output,
+                                    email_time_range=email_time_range)
 
     # do not print current working time if it's a report
     if not any((args.report, args.report_as_gtimelog)):

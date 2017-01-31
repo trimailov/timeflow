@@ -5,6 +5,7 @@ from collections import defaultdict
 from collections import OrderedDict
 
 from timeflow.settings import Settings
+from timeflow.utils import DATE_FORMAT
 from timeflow.utils import DATETIME_FORMAT
 from timeflow.utils import calc_time_diff
 from timeflow.utils import date_begins
@@ -213,20 +214,98 @@ def calculate_report(lines, date_from, date_to):
     return work_dict, slack_dict
 
 
-def email_report(date_from, date_to, report):
+def get_daily_report_subject(day, person):
+    """
+    Returns subject string for daily report email
+
+    `day:datetime.date` - date of the day we are reporting for
+    `person:str` - reporting person's name, e.g. 'Jon Doe'
+    """
+    # it's possible to use strftime('%a'), but it's locale sensitive,
+    # and I do not want this
+    weekday_names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    calendar_time = "{weekday}, week {week:02}".format(
+        weekday=weekday_names[day.isocalendar()[2]],
+        week=day.isocalendar()[1],
+    )
+    subject = "{day} report for {person} ({calendar_time})".format(
+        day=day.strftime(DATE_FORMAT),
+        person=person,
+        calendar_time=calendar_time
+    )
+    return subject
+
+
+def get_weekly_report_subject(week_day, person):
+    """
+    Returns subject string for weekly report email
+
+    `week_day:datetime.date` - any date for the week we are reporting for
+    `person:str` - reporting person's name, e.g. 'Jon Doe'
+    """
+    calendar_time = "week {:02}".format(week_day.isocalendar()[1])
+    subject = "Weekly report for {person} ({calendar_time})".format(
+        person=person,
+        calendar_time=calendar_time
+    )
+    return subject
+
+
+def get_monthly_report_subject(month_day, person):
+    """
+    Returns subject string for monthly report email
+
+    `month_day:datetime.date` - any date for the month we are reporting for
+    `person:str` - reporting person's name, e.g. 'Jon Doe'
+    """
+    calendar_time = "{year}/{month:02}".format(
+        year=month_day.year,
+        month=month_day.month
+    )
+    subject = "Monthly report for {person} ({calendar_time})".format(
+        person=person,
+        calendar_time=calendar_time
+    )
+    return subject
+
+
+def get_custom_range_report_subject(date_from, date_to, person):
+    subject = "Custom date range report for {person} ({_from:%Y-%m-%d} - {to:%Y-%m-%d})".format(
+        person=person,
+        _from=date_from,
+        to=date_to,
+    )
+    return subject
+
+
+def email_report(date_from, date_to, report, email_time_range=None):
     settings = Settings()
     settings.load()
 
     sender = settings.email_address
     receivers = [settings.activity_email]
-    subject = "Test"
+
+    date_from_time_range = dt.datetime.strptime(date_from, DATE_FORMAT)
+    subject = ''
+    if email_time_range == 'day':
+        subject = get_daily_report_subject(date_from_time_range, settings.name)
+    elif email_time_range == 'week':
+        subject = get_weekly_report_subject(date_from_time_range, settings.name)
+    elif email_time_range == 'month':
+        subject = get_monthly_report_subject(date_from_time_range, settings.name)
+    else:
+        # convert date strings to datetime objects
+        _date_from = dt.datetime.strptime(date_from, DATE_FORMAT)
+        _date_to = dt.datetime.strptime(date_to, DATE_FORMAT)
+        subject = get_custom_range_report_subject(_date_from, _date_to, settings.name)
+    full_subject = "[Activity] {}".format(subject)
 
     message = (
         "From: {}\n"
         "To: {}\n"
         "Subject: {}\n\n"
         "{}"
-    ).format(sender, ", ".join(receivers), subject, report)
+    ).format(sender, ", ".join(receivers), full_subject, report)
 
     try:
         conn = smtplib.SMTP(settings.smtp_server, settings.smtp_port)
