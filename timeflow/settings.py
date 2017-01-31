@@ -4,6 +4,7 @@ from configparser import ConfigParser
 
 
 class Settings():
+    name = "Jon Doe"
     activity_email = "activity@example.com"
     email_address = "jondoe@example.com"
     email_user = "jondoe"
@@ -14,6 +15,7 @@ class Settings():
     def config(self):
         config = ConfigParser()
         config["timeflow"] = {
+            "name": self.name,
             "activity_email": self.activity_email,
             "email_address": self.email_address,
             "email_user": self.email_user,
@@ -30,6 +32,7 @@ class Settings():
         config_file = self.get_config_file()
         config = self.config()
         config.read(config_file)
+        self.name = config['timeflow']['name']
         self.activity_email = config['timeflow']['activity_email']
         self.email_address = config['timeflow']['email_address']
         self.email_user = config['timeflow']['email_user']
