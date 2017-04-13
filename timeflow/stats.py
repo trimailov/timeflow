@@ -117,13 +117,14 @@ def create_report_as_gtimelog(report_dict, literal_time_range=''):
 def calculate_stats(lines, date_from, date_to, today=False):
     work_time = []
     slack_time = []
+    today_work_time = None
 
     line_begins = date_begins(lines, date_from)
     line_ends = date_ends(lines, date_to)
 
     date_not_found = (line_begins is None or line_ends < line_begins)
     if date_not_found:
-        return work_time, slack_time
+        return work_time, slack_time, today_work_time
 
     data = parse_lines()
 
@@ -146,7 +147,6 @@ def calculate_stats(lines, date_from, date_to, today=False):
         else:
             work_time.append(calc_time_diff(line, next_line))
 
-    today_work_time = None
     if today:
         today_start_time = dt.datetime.strptime(
             "{} {}".format(data[line_begins].date, data[line_begins].time),
