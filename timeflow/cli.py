@@ -39,6 +39,8 @@ def stats(args):
     date_from = date_to = None
     email_time_range = None
     literal_time_range = ''
+    filter_projects = []
+    exclude_projects = []
     if args.yesterday:
         yesterday_obj = dt.datetime.now() - dt.timedelta(days=1)
         date_from = date_to = yesterday_obj.strftime(utils.DATE_FORMAT)
@@ -77,16 +79,23 @@ def stats(args):
         date_from = args._from
         date_to = args.to
     else:
-        # default action is to show today's  stats
+        # default action is to show today's stats
         date_from = date_to = dt.datetime.now().strftime(utils.DATE_FORMAT)
         email_time_range = "day"
         today = True
+
+    if args.filter_projects:
+        filter_projects = [str(item) for item in args.filter_projects.split(',')]
+    if args.exclude_projects:
+        exclude_projects = [str(item) for item in args.exclude_projects.split(',')]
 
     if args.report or args.report_as_gtimelog:
         work_report, slack_report = statistics.calculate_report(
             utils.read_log_file_lines(),
             date_from,
-            date_to
+            date_to,
+            filter_projects=filter_projects,
+            exclude_projects=exclude_projects,
         )
         if args.report:
             output = statistics.create_full_report(work_report, slack_report)
@@ -203,6 +212,16 @@ def create_parser():
         "--email",
         action="store_true",
         help="Send generated report to activity email"
+    )
+    stats_parser.add_argument(
+        "--filter-projects",
+        nargs="?",
+        help="Filter list of projects included in report"
+    )
+    stats_parser.add_argument(
+        "--exclude-projects",
+        nargs="?",
+        help="Exclude list of projects from report"
     )
     stats_parser.set_defaults(func=stats)
 

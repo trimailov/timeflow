@@ -157,13 +157,16 @@ def calculate_stats(lines, date_from, date_to, today=False):
     return work_time, slack_time, today_work_time
 
 
-def calculate_report(lines, date_from, date_to):
+def calculate_report(lines, date_from, date_to,
+                     filter_projects=[],
+                     exclude_projects=[]):
     """Creates and returns report dictionaries
 
     Report dicts have form like this:
     {<Project>: {<log_message>: <accumulative time>},
                 {<log_message1>: <accumulative time1>}}
     """
+    # XXX: need to check that same project is not in both: filters and excludes
     work_dict = defaultdict(lambda: defaultdict(dict))
     slack_dict = defaultdict(lambda: defaultdict(dict))
 
@@ -193,25 +196,38 @@ def calculate_report(lines, date_from, date_to):
         time_diff = calc_time_diff(line, next_line)
 
         project = strip_log(next_line.project)
-        log = strip_log(next_line.log)
-        if next_line.is_slack:
-            # if log message is identical add time_diff
-            # to total time of the log
-            if slack_dict[project][log]:
-                total_time = slack_dict[project][log]
-                total_time += time_diff
-                slack_dict[project][log] = total_time
+
+        if project_should_be_in_report(project, filter_projects, exclude_projects):
+            log = strip_log(next_line.log)
+            if next_line.is_slack:
+                # if log message is identical add time_diff
+                # to total time of the log
+                if slack_dict[project][log]:
+                    total_time = slack_dict[project][log]
+                    total_time += time_diff
+                    slack_dict[project][log] = total_time
+                else:
+                    slack_dict[project][log] = time_diff
             else:
-                slack_dict[project][log] = time_diff
-        else:
-            if work_dict[project][log]:
-                total_time = work_dict[project][log]
-                total_time += time_diff
-                work_dict[project][log] = total_time
-            else:
-                work_dict[project][log] = time_diff
+                if work_dict[project][log]:
+                    total_time = work_dict[project][log]
+                    total_time += time_diff
+                    work_dict[project][log] = total_time
+                else:
+                    work_dict[project][log] = time_diff
 
     return work_dict, slack_dict
+
+
+def project_should_be_in_report(project, filters, excludes):
+    if project in filters:
+        return True
+    elif project in excludes:
+        return False
+    elif filters == []:
+        return True
+    elif excludes == []:
+        return False
 
 
 def get_daily_report_subject(day, person):
