@@ -1,3 +1,13 @@
+[0.2.5]
+
+-- Add settings file in `~/.config/timeflow/settings.ini`
+-- Add `--email` command to send reports via email
+   -- Uses settings file for smtp settings
+
+[0.2.4]
+
+-- "Empty" version due to some mishap with publishing to PYPI
+
 [0.2.3]
 
 -- Add `--report-as-gtimelog` to `stats` command
