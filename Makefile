@@ -28,6 +28,7 @@ coverage:
 
 .PHONY: install
 install:
+	env/bin/pip install -r requirements.txt
 	env/bin/pip install --editable .
 
 .PHONY: uninstall
