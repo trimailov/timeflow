@@ -9,10 +9,11 @@ from setuptools import setup
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+
 setup(
     name='timeflow',
     packages=['timeflow'],
-    version='0.2.4',
+    version='0.2.5',
     description='Small CLI time logger',
 
     author='Justas Trimailovas',
