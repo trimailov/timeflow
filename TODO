@@ -1,5 +1,11 @@
-- Sending reports with email
+# REFACTORING
+
+- Use `click`
+- Use `tox`
+- 100% test coverage
+
+# MISC
+
 - `--version, -V` option
-- User settings
-- Set editor with from user settings
+- Set editor from user settings
 - Better `--month`, `--week` value parsing and help
