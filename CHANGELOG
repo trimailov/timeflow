@@ -1,3 +1,7 @@
+[0.2.6]
+
+-- Add `--filter-projects` and `--exclude-projects` options
+
 [0.2.5]
 
 -- Add settings file in `~/.config/timeflow/settings.ini`
